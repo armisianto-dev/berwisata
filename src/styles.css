@@ -6,7 +6,9 @@ body {
 }
 
 body {
+  overflow-y: scroll;
   margin: 0;
+  padding-top: 60px;
   font-family: Roboto, "Helvetica Neue", sans-serif;
 }
 
@@ -27,4 +29,63 @@ body {
 button.btn-transparent {
   border: none !important;
   background: none !important;
+}
+
+/* Padding dan Margin */
+.p-5 {
+  padding: 5px !important;
+}
+
+.p-10 {
+  padding: 10px !important;
+}
+
+/* Text */
+.text-center {
+  text-align: center !important;
+}
+
+.text-left {
+  text-align: left !important;
+}
+
+.text-right {
+  text-align: right !important;
+}
+
+.text-justify {
+  text-align: justify !important;
+}
+
+.text-thin {
+  font-weight: lighter !important;
+}
+
+.text-bolder {
+  font-weight: bolder !important;
+}
+
+.text-lg {
+  font-size: large !important;
+}
+
+.text-md {
+  font-size: medium !important;
+}
+
+.text-sm {
+  font-size: small !important;
+}
+
+.text-xs {
+  font-size: x-small !important;
+}
+
+/* Pagination */
+.pagination,
+.pagination li a {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
 }

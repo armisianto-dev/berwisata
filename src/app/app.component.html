@@ -1,9 +1,12 @@
-<mat-toolbar color="primary" fxLayout="row" fxLayoutAlign="space-between center">
+<mat-toolbar id="top-bar" color="primary" fxLayout="row" fxLayoutAlign="space-between center">
   <a mat-icon-button routerLink="/home">
     <span class="mat-h2">Berwisata</span>
   </a>
   <span class="flex-spacer"></span>
-  <div>
+  <div fxLayout="row" fxLayoutAlign="end center">
+    <button mat-icon-button>
+      <mat-icon>notifications</mat-icon>
+    </button>
     <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
       <mat-icon>more_vert</mat-icon>
     </button>
@@ -21,13 +24,13 @@
 </mat-toolbar>
 <router-outlet></router-outlet>
 <mat-toolbar id="bottom-bar" color="primary" fxLayout="row" fxLayoutAlign="space-around center">
-  <button mat-button>
+  <button mat-button routerLink="/home">
     <mat-icon>home</mat-icon>
   </button>
-  <button mat-button routerLink="/catalogue/home">
+  <button mat-button routerLink="/catalogue">
     <mat-icon>library_books</mat-icon>
   </button>
-  <button mat-button>
-    <mat-icon>shopping</mat-icon>
+  <button mat-button routerLink="/travel-booking">
+    <mat-icon>card_travel</mat-icon>
   </button>
 </mat-toolbar>

@@ -7,6 +7,10 @@ const routes: Routes = [
   { path: 'home', component: HomeComponent },
   { path: 'customer', loadChildren: './customer/customer.module#CustomerModule' },
   { path: 'catalogue', loadChildren: './catalogue/catalogue.module#CatalogueModule' },
+  {
+    path: 'travel-booking',
+    loadChildren: './travel-booking/travel-booking.module#TravelBookingModule',
+  },
 ]
 
 @NgModule({
