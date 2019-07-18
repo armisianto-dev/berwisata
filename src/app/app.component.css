@@ -1,0 +1,11 @@
+#bottom-bar {
+  overflow: hidden;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+}
+
+#bottom-bar i {
+  padding: 8px;
+  cursor: pointer;
+}
