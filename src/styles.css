@@ -65,6 +65,14 @@ button.btn-transparent {
   font-weight: bolder !important;
 }
 
+.text-strike {
+  text-decoration: line-through;
+}
+
+.text-block {
+  display: block;
+}
+
 .text-lg {
   font-size: large !important;
 }
