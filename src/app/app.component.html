@@ -7,30 +7,20 @@
     <button mat-icon-button>
       <mat-icon>notifications</mat-icon>
     </button>
-    <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
-      <mat-icon>more_vert</mat-icon>
+    <button mat-icon-button aria-label="Akun anda">
+      <mat-icon>account_circle</mat-icon>
     </button>
-    <mat-menu #menu="matMenu">
-      <button mat-menu-item routerLink="/customer/account">
-        <mat-icon>account_circle</mat-icon>
-        <span>Akun Anda</span>
-      </button>
-      <button mat-menu-item>
-        <mat-icon>lock_open</mat-icon>
-        <span>Log Out</span>
-      </button>
-    </mat-menu>
   </div>
 </mat-toolbar>
 <router-outlet></router-outlet>
 <mat-toolbar id="bottom-bar" color="primary" fxLayout="row" fxLayoutAlign="space-around center">
-  <button mat-button routerLink="/home">
+  <button mat-button routerLink="/home" routerLinkActive="bg-info">
     <mat-icon>home</mat-icon>
   </button>
-  <button mat-button routerLink="/catalogue">
+  <button mat-button routerLink="/catalogue" routerLinkActive="bg-info">
     <mat-icon>library_books</mat-icon>
   </button>
-  <button mat-button routerLink="/travel-booking">
+  <button mat-button routerLink="/travel-booking" routerLinkActive="bg-info">
     <mat-icon>card_travel</mat-icon>
   </button>
 </mat-toolbar>

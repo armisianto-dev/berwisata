@@ -1,4 +1,36 @@
-<div class="row m-0">
+<div class="row mx-0 my-3">
+  <div class="col-12">
+    <div class="card card-body">
+      <form>
+        <div class="row">
+          <div class="col-12">
+            <span class="text-secondary"><i class="fa fa-search mr-1"></i>Pencarian</span>
+          </div>
+          <div class="col-lg-6 col-sm-12 my-2">
+            <input type="text" class="form-control" placeholder="Masukan kota tujuan">
+          </div>
+          <div class="col-lg-3 col-sm-12 my-2">
+            <select class="form-control" placeholder="Pilih Durasi">
+              <option value="">Semua Durasi</option>
+              <option value="1">1 Day 1 Night</option>
+              <option value="2">2 Day 1 Night</option>
+              <option value="3">2 Day 2 Night</option>
+              <option value="4">3 Day 2 Night</option>
+              <option value="5">3 Day 3 Night</option>
+              <option value="6">4 Day 3 Night</option>
+            </select>
+          </div>
+          <div class="col-lg-3 col-sm-12 my-2">
+            <button class="btn btn-md btn-primary">
+              Cari
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<div class="row mx-0">
   <div class="col-lg-4 col-md-6 col-sm-12 p-3">
     <mat-card>
       <mat-card-header>
@@ -33,7 +65,7 @@
             </span>
           </div>
           <div class="col-6 text-right">
-            <a href="">
+            <a routerLink="/catalogue/catalogue-detail">
               Selengkapnya
             </a>
           </div>
@@ -208,7 +240,7 @@
     </mat-card>
   </div>
 </div>
-<div class="row">
+<div class="row m-0">
   <div class="col-12">
     <nav aria-label="Page navigation example">
       <ul class="pagination">
