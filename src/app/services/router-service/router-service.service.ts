@@ -7,10 +7,6 @@ import { ActivatedRouteSnapshot, Router } from '@angular/router'
 export class RouterServiceService {
   constructor(private router: Router) {}
 
-  public getRouteTitle(): string {
-    return this.getRouteData('title')
-  }
-
   public getRouteData(data: string): any {
     const root = this.router.routerState.snapshot.root
     return this.lastChild(root).data[data]
@@ -19,6 +15,11 @@ export class RouterServiceService {
   public getRouteAllData(): any {
     const root = this.router.routerState.snapshot.root
     return this.lastChild(root).data
+  }
+
+  public changeRouteData(data: string, update: any) {
+    const root = this.router.routerState.snapshot.root
+    this.lastChild(root).data[data] = update
   }
 
   private lastChild(route: ActivatedRouteSnapshot): ActivatedRouteSnapshot {

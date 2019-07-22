@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core'
+import { RouterServiceService } from 'src/app/services/router-service/router-service.service'
 
 @Component({
   selector: 'app-catalogue-detail',
@@ -6,7 +7,9 @@ import { Component, OnInit } from '@angular/core'
   styleUrls: ['./catalogue-detail.component.css'],
 })
 export class CatalogueDetailComponent implements OnInit {
-  constructor() {}
+  constructor(private routerService: RouterServiceService) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.routerService.changeRouteData('nav_title', 'Bali 3D2N')
+  }
 }

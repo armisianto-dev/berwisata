@@ -10,7 +10,6 @@ import { RouterServiceService } from './services/router-service/router-service.s
   styleUrls: ['./app.component.css'],
 })
 export class AppComponent implements OnInit {
-  nav_title = 'Berwisata'
   currentRouter: IRouter
   public constructor(
     private router: Router,
