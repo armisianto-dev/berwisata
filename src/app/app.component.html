@@ -1,7 +1,8 @@
 <mat-toolbar id="top-bar" color="primary" fxLayout="row" fxLayoutAlign="space-between center">
-  <a mat-icon-button routerLink="/home">
-    <span class="mat-h2">Berwisata</span>
+  <a *ngIf="currentRouter.back === true" routerLink="{{currentRouter.back_path}}" class="text-white">
+    <i class="fa fa-chevron-circle-left mx-2"></i>
   </a>
+  <h2 class="mat-h2">{{currentRouter.nav_title}}</h2>
   <span class="flex-spacer"></span>
   <div fxLayout="row" fxLayoutAlign="end center">
     <button mat-icon-button>

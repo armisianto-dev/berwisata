@@ -9,6 +9,7 @@ import { CatalogueModule } from './catalogue/catalogue.module'
 import { HomeComponent } from './components/home/home.component'
 import { CustomerModule } from './customer/customer.module'
 import { MaterialModule } from './material.module'
+import { RouterServiceService } from './services/router-service/router-service.service'
 import { TravelBookingModule } from './travel-booking/travel-booking.module'
 import { WelcomeModule } from './welcome/welcome.module'
 
@@ -26,7 +27,7 @@ import { WelcomeModule } from './welcome/welcome.module'
     TravelBookingModule,
     AngularFontAwesomeModule,
   ],
-  providers: [],
+  providers: [RouterServiceService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
