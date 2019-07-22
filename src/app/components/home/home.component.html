@@ -1,1 +1,157 @@
-<p>Home</p>
+<ngb-carousel *ngIf="images" [showNavigationArrows]="showNavigationArrows"
+  [showNavigationIndicators]="showNavigationIndicators" style="margin-top: -5px">
+  <ng-template ngbSlide *ngFor="let image of images">
+    <div class="picsum-img-wrapper">
+      <img src="{{image.image_url}}" alt="Random slide" style="width: 100%">
+    </div>
+    <div class="carousel-caption">
+      <h3>{{image.caption_label}}</h3>
+      <!-- <p>This carousel hides navigation arrows and indicators.</p> -->
+    </div>
+  </ng-template>
+</ngb-carousel>
+<div class="row mx-0">
+  <div class="col-12 p-4">
+    <h5 class="text-primary">{{ 'Promo Terbaru' | uppercase}}</h5>
+    <div class="row flex-row flex-nowrap" style="overflow: auto; white-space: nowrap; padding-bottom: 15px;">
+      <div class="col-12 col-sm-6 col-md-6 col-lg-4">
+        <mat-card>
+          <mat-card-header>
+            <mat-card-title style="margin-left: -16px">Bali 3D2N</mat-card-title>
+            <mat-card-subtitle class="text-sm" style="margin-left: -16px">
+              <i class="fa fa-map-marker mr-1"></i> Bali, Indonesia
+            </mat-card-subtitle>
+          </mat-card-header>
+          <img mat-card-image src="assets/images/paket_wisata/bali.jpg" alt="Photo of a Shiba Inu" />
+          <mat-card-content>
+            <p class="row">
+              <span class="col-6 text-left">
+                <span class="text-block">
+                  <i class="fa fa-heart mr-1 text-danger"></i>
+                  <span class="text-sm">26 </span>
+                </span>
+                <i class="fa fa-briefcase mr-1 text-info"></i>
+                <span class="text-sm">97 tour selesai </span>
+              </span>
+              <span class="col-6 text-right align-middle">
+                <span class="text-secondary text-xs text-strike text-block mr-1">Rp. 500.000/pax</span>
+                <span class="text-bolder">Rp. 450.000/pax</span>
+              </span>
+            </p>
+          </mat-card-content>
+          <mat-divider></mat-divider>
+          <mat-card-footer class="p-10">
+            <div class="row">
+              <div class="col-12 text-right">
+                <a routerLink="/catalogue/catalogue-detail">
+                  Selengkapnya
+                </a>
+              </div>
+            </div>
+          </mat-card-footer>
+        </mat-card>
+      </div>
+      <div class="col-12 col-sm-6 col-md-6 col-lg-4">
+        <mat-card>
+          <mat-card-header>
+            <mat-card-title style="margin-left: -16px">Bali 3D2N</mat-card-title>
+            <mat-card-subtitle class="text-sm" style="margin-left: -16px">
+              <i class="fa fa-map-marker mr-1"></i> Bali, Indonesia
+            </mat-card-subtitle>
+          </mat-card-header>
+          <img mat-card-image src="assets/images/paket_wisata/bali.jpg" alt="Photo of a Shiba Inu" />
+          <mat-card-content>
+            <p class="row">
+              <span class="col-6 text-left">
+                <span class="text-block">
+                  <i class="fa fa-heart mr-1 text-danger"></i>
+                  <span class="text-sm">26 </span>
+                </span>
+                <i class="fa fa-briefcase mr-1 text-info"></i>
+                <span class="text-sm">97 tour selesai </span>
+              </span>
+              <span class="col-6 text-right align-middle">
+                <span class="text-secondary text-xs text-strike text-block mr-1">Rp. 500.000/pax</span>
+                <span class="text-bolder">Rp. 450.000/pax</span>
+              </span>
+            </p>
+          </mat-card-content>
+          <mat-divider></mat-divider>
+          <mat-card-footer class="p-10">
+            <div class="row">
+              <div class="col-12 text-right">
+                <a routerLink="/catalogue/catalogue-detail">
+                  Selengkapnya
+                </a>
+              </div>
+            </div>
+          </mat-card-footer>
+        </mat-card>
+      </div>
+      <div class="col-12 col-sm-6 col-md-6 col-lg-4">
+        <mat-card>
+          <mat-card-header>
+            <mat-card-title style="margin-left: -16px">Bali 3D2N</mat-card-title>
+            <mat-card-subtitle class="text-sm" style="margin-left: -16px">
+              <i class="fa fa-map-marker mr-1"></i> Bali, Indonesia
+            </mat-card-subtitle>
+          </mat-card-header>
+          <img mat-card-image src="assets/images/paket_wisata/bali.jpg" alt="Photo of a Shiba Inu" />
+          <mat-card-content>
+            <p class="row">
+              <span class="col-6 text-left">
+                <span class="text-block">
+                  <i class="fa fa-heart mr-1 text-danger"></i>
+                  <span class="text-sm">26 </span>
+                </span>
+                <i class="fa fa-briefcase mr-1 text-info"></i>
+                <span class="text-sm">97 tour selesai </span>
+              </span>
+              <span class="col-6 text-right align-middle">
+                <span class="text-secondary text-xs text-strike text-block mr-1">Rp. 500.000/pax</span>
+                <span class="text-bolder">Rp. 450.000/pax</span>
+              </span>
+            </p>
+          </mat-card-content>
+          <mat-divider></mat-divider>
+          <mat-card-footer class="p-10">
+            <div class="row">
+              <div class="col-12 text-right">
+                <a routerLink="/catalogue/catalogue-detail">
+                  Selengkapnya
+                </a>
+              </div>
+            </div>
+          </mat-card-footer>
+        </mat-card>
+      </div>
+      <div class="col-12 col-sm-6 col-md-6 col-lg-4 text-left">
+        <div style="padding-top: 45%;" class="text-center">
+          <a routerLink="/catalogue">
+            <i class="fa fa-chevron-circle-right fa-4x text-block"></i>
+            Paket Wisata Lainnya
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-12 px-4 py-1 mb-4">
+    <div class="card bg-info text-white" routerLink="/catalogue">
+      <div class="card-body">
+        <h5 class="card-title">Request Paket Wisata</h5>
+        <p class="card-text">Anda dapat mengajukan paket wisata dengan durasi dan jumlah obyek wisata yang akan
+          dikunjungi sesuai keinginan anda.</p>
+      </div>
+    </div>
+  </div>
+  <div class="col-12 bg-warning p-4">
+    <h5 class="text-center">{{ 'Cara Pemesanan' | uppercase }}</h5>
+    <ul class="list-unstyled">
+      <li> <i class="fa fa-check-square mr-1"></i>Pilih Produk/Paket Wisata</li>
+      <li> <i class="fa fa-mouse-pointer mr-1"></i>Klik "Pesan Sekarang"</li>
+      <li> <i class="fa fa-edit mr-1"></i>Isi Data Pemesanan</li>
+      <li> <i class="fa fa-credit-card mr-1"></i>Bayar DP Anda</li>
+      <li> <i class="fa fa-check mr-1"></i>Proses Pemesanan Selesai</li>
+    </ul>
+  </div>
+</div>
