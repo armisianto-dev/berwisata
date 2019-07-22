@@ -31,3 +31,14 @@ ul.timeline>li:before {
   height: 20px;
   z-index: 400;
 }
+
+.floating {
+  position: fixed;
+  bottom: 60px;
+  width: 100%;
+  z-index: 110;
+}
+
+.floating .btn {
+  box-shadow: 2px 2px 3px #999;
+}
