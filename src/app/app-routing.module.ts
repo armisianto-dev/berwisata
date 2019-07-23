@@ -46,7 +46,7 @@ const routes: Routes = [
     },
   },
   {
-    path: 'catalogue/catalogue-detail',
+    path: 'catalogue/:catalogueId',
     component: CatalogueDetailComponent,
     data: {
       title: 'Katalog Detail | Berwisata',

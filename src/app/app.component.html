@@ -5,7 +5,7 @@
   <h2 class="mat-h2">{{currentRouter.nav_title}}</h2>
   <span class="flex-spacer"></span>
   <div fxLayout="row" fxLayoutAlign="end center">
-    <button mat-icon-button>
+    <button mat-icon-button class="badge-notification" data-badge="9+">
       <mat-icon>notifications</mat-icon>
     </button>
     <button mat-icon-button aria-label="Akun anda">
@@ -14,14 +14,14 @@
   </div>
 </mat-toolbar>
 <router-outlet></router-outlet>
-<mat-toolbar id="bottom-bar" color="primary" fxLayout="row" fxLayoutAlign="space-around center">
-  <button mat-button routerLink="/home" routerLinkActive="bg-info">
+<mat-toolbar id="bottom-bar" color="white" fxLayout="row" fxLayoutAlign="space-around center">
+  <a mat-button routerLink="/home" class="text-secondary" routerLinkActive="text-primary">
     <mat-icon>home</mat-icon>
-  </button>
-  <button mat-button routerLink="/catalogue" routerLinkActive="bg-info">
+  </a>
+  <a mat-button routerLink="/catalogue" class="text-secondary" routerLinkActive="text-primary">
     <mat-icon>library_books</mat-icon>
-  </button>
-  <button mat-button routerLink="/travel-booking" routerLinkActive="bg-info">
+  </a>
+  <a mat-button routerLink="/travel-booking" class="text-secondary" routerLinkActive="text-primary">
     <mat-icon>card_travel</mat-icon>
-  </button>
+  </a>
 </mat-toolbar>
