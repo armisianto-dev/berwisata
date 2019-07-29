@@ -3,6 +3,7 @@ import { Title } from '@angular/platform-browser'
 import { NavigationEnd, Router, RouterEvent } from '@angular/router'
 import { IRouter } from './model/router/router'
 import { RouterServiceService } from './services/router-service/router-service.service'
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-root',
@@ -10,6 +11,7 @@ import { RouterServiceService } from './services/router-service/router-service.s
   styleUrls: ['./app.component.css'],
 })
 export class AppComponent implements OnInit {
+  env = environment
   currentRouter: IRouter
   public constructor(
     private router: Router,

@@ -1,13 +1,17 @@
-<mat-tab-group style="margin-bottom: 40px">
+<mat-progress-spinner class="mx-auto my-3" color="primary" mode="indeterminate" value="75" diameter="50"
+  *ngIf="!catalogueDetailObservable">
+</mat-progress-spinner>
+<mat-tab-group style="margin-bottom: 40px" *ngIf="catalogueDetailObservable | async as catalogue">
   <mat-tab label="Deskripsi">
     <mat-card>
       <mat-card-header>
-        <mat-card-title style="margin-left: -16px">Bali 3D2N</mat-card-title>
+        <mat-card-title style="margin-left: -16px">{{catalogue.paket_nama}}</mat-card-title>
         <mat-card-subtitle class="text-sm" style="margin-left: -16px">
-          <i class="fa fa-map-marker mr-1"></i> Bali, Indonesia
+          <i class="fa fa-map-marker mr-1"></i> {{catalogue.city_name}}, {{catalogue.country_name}}
         </mat-card-subtitle>
       </mat-card-header>
-      <img mat-card-image src="assets/images/paket_wisata/bali.jpg" alt="Photo of a Shiba Inu" />
+      <img mat-card-image src="assets/images/{{catalogue.paket_img_path}}/{{catalogue.paket_img_name}}"
+        alt="{{catalogue.paket_nama}}" />
       <mat-card-content>
         <p class="row">
           <span class="col-6 text-left">
@@ -19,14 +23,15 @@
             <span class="text-sm">97 tour selesai </span>
           </span>
           <span class="col-6 text-right align-middle">
-            <span class="text-secondary text-xs text-strike text-block mr-1">Rp. 500.000/pax</span>
-            <span class="text-bolder">Rp. 450.000/pax</span>
+            <span class="text-secondary text-xs text-strike text-block mr-1" *ngIf="catalogue.promo_st == 'yes'">
+              {{catalogue.harga_normal | currency:"Rp "}}/pax</span>
+            <span class="text-bolder"
+              *ngIf="catalogue.promo_st == 'yes'">{{catalogue.harga_promo | currency:"Rp "}}/pax</span>
+            <span class="text-bolder"
+              *ngIf="catalogue.promo_st == 'no'">{{catalogue.harga_normal | currency:"Rp "}}/pax</span>
           </span>
         </p>
-        <p>
-          Paket wisata ke bali dengan durasi 3 hari 2 malam. Paket wisata ini sudah termasuk penginapan, transportasi
-          dan akomodasi lainnya ditambah dengan bonus dokumentasi dari tim kami.
-        </p>
+        <p>{{catalogue.paket_deskripsi}}</p>
       </mat-card-content>
     </mat-card>
   </mat-tab>

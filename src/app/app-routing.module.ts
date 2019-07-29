@@ -46,7 +46,7 @@ const routes: Routes = [
     },
   },
   {
-    path: 'catalogue/:catalogueId',
+    path: 'catalogue/catalogue-detail/:catalogueId',
     component: CatalogueDetailComponent,
     data: {
       title: 'Katalog Detail | Berwisata',
@@ -68,7 +68,11 @@ const routes: Routes = [
 ]
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [
+    RouterModule.forRoot(routes, {
+      scrollPositionRestoration: 'enabled',
+    }),
+  ],
   exports: [RouterModule],
 })
 export class AppRoutingModule {}

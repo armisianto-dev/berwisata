@@ -1,45 +1,30 @@
 <div class="row mx-0 my-3">
-  <div class="col-12">
-    <div class="card card-body">
-      <form>
-        <div class="row">
-          <div class="col-12">
-            <span class="text-secondary"><i class="fa fa-search mr-1"></i>Pencarian</span>
-          </div>
-          <div class="col-lg-6 col-sm-12 my-2">
-            <input type="text" class="form-control" placeholder="Masukan kota tujuan">
-          </div>
-          <div class="col-lg-3 col-sm-12 my-2">
-            <select class="form-control" placeholder="Pilih Durasi">
-              <option value="">Semua Durasi</option>
-              <option value="1">1 Day 1 Night</option>
-              <option value="2">2 Day 1 Night</option>
-              <option value="3">2 Day 2 Night</option>
-              <option value="4">3 Day 2 Night</option>
-              <option value="5">3 Day 3 Night</option>
-              <option value="6">4 Day 3 Night</option>
-            </select>
-          </div>
-          <div class="col-lg-3 col-sm-12 my-2">
-            <button class="btn btn-md btn-primary">
-              Cari
-            </button>
-          </div>
-        </div>
-      </form>
+  <div class="col-sm-12 col-md-6">
+    <div class="input-group mb-3">
+      <input type="text" class="form-control" placeholder="Masukan kota tujuan" aria-label="Masukan kota tujuan"
+        aria-describedby="basic-addon2">
+      <div class="input-group-append">
+        <button class="btn btn-primary" type="button">
+          <i class="fa fa-search mx-2"></i>
+        </button>
+      </div>
     </div>
   </div>
 </div>
-<div class="row mx-0">
-  <div class="col-lg-4 col-md-6 col-sm-12 p-3">
+<mat-progress-spinner class="mx-auto my-3" mode="indeterminate" color="primary" value="75" diameter="50"
+  *ngIf="showLoading">
+</mat-progress-spinner>
+<div class="row mx-0" *ngIf="!showLoading">
+  <div *ngFor="let catalogueList of catalogueListsObservable | async" class="col-lg-4 col-md-6 col-sm-12 p-3">
     <mat-card>
       <mat-card-header>
-        <mat-card-title style="margin-left: -16px">Bali 3D2N</mat-card-title>
+        <mat-card-title style="margin-left: -16px">{{catalogueList.paket_nama}}</mat-card-title>
         <mat-card-subtitle class="text-sm" style="margin-left: -16px">
-          <i class="fa fa-map-marker mr-1"></i> Bali, Indonesia
+          <i class="fa fa-map-marker mr-1"></i> {{catalogueList.city_name}}, {{catalogueList.country_name}}
         </mat-card-subtitle>
       </mat-card-header>
-      <img mat-card-image src="assets/images/paket_wisata/bali.jpg" alt="Photo of a Shiba Inu" />
+      <img mat-card-image src="assets/images/{{catalogueList.paket_img_path}}/{{catalogueList.paket_img_name}}"
+        alt="Photo of a Shiba Inu" />
       <mat-card-content>
         <p class="row">
           <span class="col-6 text-left">
@@ -51,8 +36,12 @@
             <span class="text-sm">97 tour selesai </span>
           </span>
           <span class="col-6 text-right align-middle">
-            <span class="text-secondary text-xs text-strike text-block mr-1">Rp. 500.000/pax</span>
-            <span class="text-bolder">Rp. 450.000/pax</span>
+            <span class="text-secondary text-xs text-strike text-block mr-1" *ngIf="catalogueList.promo_st == 'yes'">
+              {{catalogueList.harga_normal | currency:"Rp "}}/pax</span>
+            <span class="text-bolder"
+              *ngIf="catalogueList.promo_st == 'yes'">{{catalogueList.harga_promo | currency:"Rp "}}/pax</span>
+            <span class="text-bolder"
+              *ngIf="catalogueList.promo_st == 'no'">{{catalogueList.harga_normal | currency:"Rp "}}/pax</span>
           </span>
         </p>
       </mat-card-content>
@@ -60,7 +49,7 @@
       <mat-card-footer class="p-10">
         <div class="row">
           <div class="col-12 text-right">
-            <a routerLink="/catalogue/01">
+            <a routerLink="/catalogue/catalogue-detail/{{catalogueList.paket_id}}">
               Selengkapnya
             </a>
           </div>
@@ -68,171 +57,10 @@
       </mat-card-footer>
     </mat-card>
   </div>
-  <div class="col-lg-4 col-md-6 col-sm-12 p-3">
-    <mat-card>
-      <mat-card-header>
-        <mat-card-title style="margin-left: -16px">Jogja 3D2N</mat-card-title>
-        <mat-card-subtitle class="text-sm" style="margin-left: -16px">
-          <i class="fa fa-map-marker mr-1"></i> Yogyakarta, Indonesia
-        </mat-card-subtitle>
-      </mat-card-header>
-      <img mat-card-image src="assets/images/paket_wisata/jogja.jpg" alt="Photo of a Shiba Inu" />
-      <mat-card-content>
-        <p class="row">
-          <span class="col-6 text-left">
-            <span class="text-block">
-              <i class="fa fa-heart mr-1 text-danger"></i>
-              <span class="text-sm">26 </span>
-            </span>
-            <i class="fa fa-briefcase mr-1 text-info"></i>
-            <span class="text-sm">97 tour selesai </span>
-          </span>
-          <span class="col-6 text-right align-middle">
-            <span class="text-bolder">Rp. 450.000/pax</span>
-          </span>
-        </p>
-      </mat-card-content>
-      <mat-divider></mat-divider>
-      <mat-card-footer class="p-10">
-        <div class="row">
-          <div class="col-12 text-right">
-            <a routerLink="/catalogue/02">
-              Selengkapnya
-            </a>
-          </div>
-        </div>
-      </mat-card-footer>
-    </mat-card>
-  </div>
-  <div class="col-lg-4 col-md-6 col-sm-12 p-3">
-    <mat-card>
-      <mat-card-header>
-        <mat-card-title style="margin-left: -16px">Bromo 3D2N</mat-card-title>
-        <mat-card-subtitle class="text-sm" style="margin-left: -16px">
-          <i class="fa fa-map-marker mr-1"></i> Malang, Indonesia
-        </mat-card-subtitle>
-      </mat-card-header>
-      <img mat-card-image src="assets/images/paket_wisata/bromo.jpg" alt="Photo of a Shiba Inu" />
-      <mat-card-content>
-        <p class="row">
-          <span class="col-6 text-left">
-            <span class="text-block">
-              <i class="fa fa-heart mr-1 text-secondary"></i>
-              <span class="text-sm">26 </span>
-            </span>
-            <i class="fa fa-briefcase mr-1 text-info"></i>
-            <span class="text-sm">97 tour selesai </span>
-          </span>
-          <span class="col-6 text-right align-middle">
-            <span class="text-secondary text-xs text-strike text-block mr-1">Rp. 400.000/pax</span>
-            <span class="text-bolder">Rp. 380.000/pax</span>
-          </span>
-        </p>
-      </mat-card-content>
-      <mat-divider></mat-divider>
-      <mat-card-footer class="p-10">
-        <div class="row">
-          <div class="col-12 text-right">
-            <a routerLink="/catalogue/03">
-              Selengkapnya
-            </a>
-          </div>
-        </div>
-      </mat-card-footer>
-    </mat-card>
-  </div>
-  <div class="col-lg-4 col-md-6 col-sm-12 p-3">
-    <mat-card>
-      <mat-card-header>
-        <mat-card-title style="margin-left: -16px">Karimun Jawa 3D2N</mat-card-title>
-        <mat-card-subtitle class="text-sm" style="margin-left: -16px">
-          <i class="fa fa-map-marker mr-1"></i> Jawa Tengah, Indonesia
-        </mat-card-subtitle>
-      </mat-card-header>
-      <img mat-card-image src="assets/images/paket_wisata/karimunjawa.jpg" alt="Photo of a Shiba Inu" />
-      <mat-card-content>
-        <p class="row">
-          <span class="col-6 text-left">
-            <span class="text-block">
-              <i class="fa fa-heart mr-1 text-secondary"></i>
-              <span class="text-sm">26 </span>
-            </span>
-            <i class="fa fa-briefcase mr-1 text-info"></i>
-            <span class="text-sm">97 tour selesai </span>
-          </span>
-          <span class="col-6 text-right align-middle">
-            <span class="text-secondary text-xs text-strike text-block mr-1">Rp. 1.500.000/pax</span>
-            <span class="text-bolder">Rp. 1.350.000/pax</span>
-          </span>
-        </p>
-      </mat-card-content>
-      <mat-divider></mat-divider>
-      <mat-card-footer class="p-10">
-        <div class="row">
-          <div class="col-12 text-right">
-            <a routerLink="/catalogue/04">
-              Selengkapnya
-            </a>
-          </div>
-        </div>
-      </mat-card-footer>
-    </mat-card>
-  </div>
-  <div class="col-lg-4 col-md-6 col-sm-12 p-3">
-    <mat-card>
-      <mat-card-header>
-        <mat-card-title style="margin-left: -16px">Dieng 3D2N</mat-card-title>
-        <mat-card-subtitle class="text-sm" style="margin-left: -16px">
-          <i class="fa fa-map-marker mr-1"></i> Jawa Tengah, Indonesia
-        </mat-card-subtitle>
-      </mat-card-header>
-      <img mat-card-image src="assets/images/paket_wisata/dieng.jpg" alt="Photo of a Shiba Inu" />
-      <mat-card-content>
-        <p class="row">
-          <span class="col-6 text-left">
-            <span class="text-block">
-              <i class="fa fa-heart mr-1 text-secondary"></i>
-              <span class="text-sm">26 </span>
-            </span>
-            <i class="fa fa-briefcase mr-1 text-info"></i>
-            <span class="text-sm">97 tour selesai </span>
-          </span>
-          <span class="col-6 text-right align-middle">
-            <span class="text-bolder">Rp. 300.000/pax</span>
-          </span>
-        </p>
-      </mat-card-content>
-      <mat-divider></mat-divider>
-      <mat-card-footer class="p-10">
-        <div class="row">
-          <div class="col-12 text-right">
-            <a routerLink="/catalogue/05">
-              Selengkapnya
-            </a>
-          </div>
-        </div>
-      </mat-card-footer>
-    </mat-card>
-  </div>
-</div>
-<div class="row m-0">
   <div class="col-12">
-    <nav aria-label="Page navigation example">
-      <ul class="pagination">
-        <li class="page-item">
-          <a class="page-link" href="#" aria-label="Previous">
-            <span aria-hidden="true">&laquo;</span>
-          </a>
-        </li>
-        <li class="page-item"><a class="page-link" href="#">1</a></li>
-        <li class="page-item"><a class="page-link" href="#">2</a></li>
-        <li class="page-item"><a class="page-link" href="#">3</a></li>
-        <li class="page-item">
-          <a class="page-link" href="#" aria-label="Next">
-            <span aria-hidden="true">&raquo;</span>
-          </a>
-        </li>
-      </ul>
-    </nav>
+    <ngb-pagination class="d-flex justify-content-center" [collectionSize]="paginationTotal"
+      [pageSize]="paginationPerPage" [(page)]="currPage" [maxSize]="5" [rotate]="true" [boundaryLinks]="true"
+      (pageChange)="onPageChange(currPage)" size="sm">
+    </ngb-pagination>
   </div>
 </div>

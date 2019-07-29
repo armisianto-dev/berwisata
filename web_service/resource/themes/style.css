@@ -1,0 +1,33 @@
+body {
+  padding-top: 60px;
+}
+.highlight {
+  background-color: #f5f5f5;
+  margin: 0 0 1rem;
+  padding: 0 0.5rem;
+  position: relative;
+}
+.highlight pre {
+  margin-bottom: 0;
+}
+.color-red {
+  color: #d44950;
+}
+.color-blue {
+  color: #2f6f9f;
+}
+.color-light-blue {
+  color: #4f9fcf
+}
+.nav-pills .nav-link.active {
+  color: #ff5252;
+}
+.sidebar-fixed {
+  position:fixed;
+}
+.content-fixed {
+  left: 25%;
+}
+.nav-link:hover, .nav-link.active {
+  background-color: #f2f2f2 !important;
+}

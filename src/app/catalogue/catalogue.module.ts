@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common'
 import { NgModule } from '@angular/core'
-import { MatTabsModule } from '@angular/material'
+import { MatProgressSpinnerModule, MatTabsModule } from '@angular/material'
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap'
 import { MaterialModule } from '../material.module'
 import { CatalogueDetailComponent } from './catalogue-detail/catalogue-detail.component'
 import { CatalogueRoutingModule } from './catalogue-routing.module'
@@ -8,6 +9,13 @@ import { CatalogueComponent } from './catalogue.component'
 
 @NgModule({
   declarations: [CatalogueComponent, CatalogueDetailComponent],
-  imports: [CommonModule, CatalogueRoutingModule, MaterialModule, MatTabsModule],
+  imports: [
+    CommonModule,
+    CatalogueRoutingModule,
+    MaterialModule,
+    MatTabsModule,
+    NgbModule,
+    MatProgressSpinnerModule,
+  ],
 })
 export class CatalogueModule {}
