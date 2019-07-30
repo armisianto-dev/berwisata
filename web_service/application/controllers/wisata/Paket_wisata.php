@@ -41,19 +41,6 @@ class Paket_wisata extends REST_Controller {
     $qcity = empty($qcity) || $qcity == "" ? '%' : '%'.$qcity."%";
 
     $result = $this->M_paket_wisata->get_all_paket_wisata(array($qcity, $start, intval($per_page)));
-    if(! $result){
-      $response = array(
-        'title'   => 'List Paket Wisata',
-        'status'  => false,
-        'message' => 'List Paket Wisata tidak ditemukan',
-        'error'   => array(
-          'code'    => '002',
-          'message' => 'Data tidak ditemukan'
-        )
-      );
-      return $this->set_response($response, REST_Controller::HTTP_BAD_REQUEST);
-    }
-
     $response = array(
       'title'   => 'List Paket Wisata',
       'status'  => true,
@@ -67,19 +54,6 @@ class Paket_wisata extends REST_Controller {
   public function paket_wisata_promo_get() {
 
     $result = $this->M_paket_wisata->get_all_paket_wisata_promo();
-    if(! $result){
-      $response = array(
-        'title'   => 'List Paket Wisata',
-        'status'  => false,
-        'message' => 'List Paket Wisata tidak ditemukan',
-        'error'   => array(
-          'code'    => '002',
-          'message' => 'Data tidak ditemukan'
-        )
-      );
-      return $this->set_response($response, REST_Controller::HTTP_BAD_REQUEST);
-    }
-
     $response = array(
       'title'   => 'List Paket Wisata',
       'status'  => true,

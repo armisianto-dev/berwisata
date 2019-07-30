@@ -20,7 +20,8 @@
   <p>Data tidak ditemukan untuk paket wisata ke kota '{{catalogueSearchData.city}}'</p>
 </div>
 <div class="row mx-0" *ngIf="paginationTotal > 0">
-  <div *ngFor="let catalogueList of catalogueListsObservable | async" class="col-lg-4 col-md-6 col-sm-12 p-3">
+  <div *ngFor="let catalogueList of catalogueListsObservable | async"
+    class="col-lg-4 col-md-6 col-sm-12 p-3 card-catalogue">
     <mat-card>
       <mat-card-header>
         <mat-card-title style="margin-left: -16px">{{catalogueList.paket_nama}}</mat-card-title>
@@ -63,7 +64,7 @@
     </mat-card>
   </div>
   <div class="col-12">
-    <ngb-pagination class="d-flex justify-content-center" [collectionSize]="paginationTotal"
+    <ngb-pagination class="d-flex justify-content-center card-catalogue" [collectionSize]="paginationTotal"
       [pageSize]="paginationPerPage" [(page)]="currPage" [maxSize]="5" [rotate]="true" [boundaryLinks]="true"
       (pageChange)="onPageChange(currPage)" size="sm">
     </ngb-pagination>
