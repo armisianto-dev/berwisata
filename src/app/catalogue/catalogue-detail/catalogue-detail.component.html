@@ -1,7 +1,5 @@
-<mat-progress-spinner class="mx-auto my-3" color="primary" mode="indeterminate" value="75" diameter="50"
-  *ngIf="!catalogueDetailObservable">
-</mat-progress-spinner>
-<mat-tab-group style="margin-bottom: 40px" *ngIf="catalogueDetailObservable | async as catalogue">
+<mat-tab-group style="margin-bottom: 40px" *ngIf="catalogueDetailObservable | async as catalogue"
+  class="card-catalogue">
   <mat-tab label="Deskripsi">
     <mat-card>
       <mat-card-header>
