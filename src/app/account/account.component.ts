@@ -10,8 +10,13 @@ export class AccountComponent implements OnInit {
   isLogedIn: boolean = false
   constructor(private router: Router) {}
 
+  logoutProcess() {
+    localStorage.removeItem('session_login')
+    this.router.navigate(['/home'])
+  }
+
   ngOnInit() {
-    if (!this.isLogedIn) {
+    if (!localStorage.getItem('session_login')) {
       this.router.navigate(['/account/auth'])
     }
   }

@@ -22,12 +22,12 @@ class Token extends REST_Controller {
 
   public function index_post() {
     // validasi input
-    $this->form_validation->set_rules('username', 'Username', 'trim|required|max_length[255]');
-    $this->form_validation->set_rules('password', 'Password', 'trim|required|max_length[255]');
+    $this->form_validation->set_rules('email', 'Email', 'trim|required|valid_email');
+    $this->form_validation->set_rules('password', 'Password', 'trim|required');
 
     if ($this->form_validation->run() === false) {
       $response = array(
-        'title'   => 'Generate Token',
+        'title'   => 'Login',
         'status'  => false,
         'message' => 'Token gagal digenerate',
         'error'   => array(
@@ -38,14 +38,13 @@ class Token extends REST_Controller {
       return $this->set_response($response, REST_Controller::HTTP_UNPROCESSABLE_ENTITY);
     }
 
-    $username = $this->input->post('username', true);
+    $email = $this->input->post('email', true);
     $password = $this->input->post('password', true);
-    $role = $this->input->post('role', true);
 
-    $user = $this->M_com_user->get_user(array($username, $role));
-    if (! $user) {
+    // $user = $this->M_com_user->get_user(array($username, $role));
+    if ($email != "armisianto@gmail.com" || $password != "kosongsatu") {
       $response = array(
-        'title'   => 'Generate Token',
+        'title'   => 'Login',
         'status'  => false,
         'message' => 'Token gagal digenerate',
         'error'   => array(
@@ -56,32 +55,32 @@ class Token extends REST_Controller {
       return $this->set_response($response, REST_Controller::HTTP_UNAUTHORIZED);
     }
 
-    $password_decode = $this->encrypt->decode($user['user_pass'], $user['user_key']);
-    if (md5($password) != $password_decode) {
-      $response = array(
-        'title'   => 'Generate Token',
-        'status'  => false,
-        'message' => 'Token gagal digenerate',
-        'error'   => array(
-          'code'    => '003',
-          'message' => 'Periksa kembali username dan password anda'
-        ),
-      );
-      return $this->set_response($response, REST_Controller::HTTP_UNAUTHORIZED);
-    }
+    // $password_decode = $this->encrypt->decode($user['user_pass'], $user['user_key']);
+    // if (md5($password) != $password_decode) {
+    //   $response = array(
+    //     'title'   => 'Login',
+    //     'status'  => false,
+    //     'message' => 'Token gagal digenerate',
+    //     'error'   => array(
+    //       'code'    => '003',
+    //       'message' => 'Periksa kembali username dan password anda'
+    //     ),
+    //   );
+    //   return $this->set_response($response, REST_Controller::HTTP_UNAUTHORIZED);
+    // }
 
     $now_seconds = time();
     $config   = $this->config->item('jwt');
     $payload  = array(
       'iat' => $now_seconds,
       'exp' => $now_seconds+($config['expiration_time']),  // expiration time
-      'username' => $username,
+      'username' => $email,
     );
 
     $token = JWT::encode($payload, $config['private_key'], $config['algorithms']);
 
     $response = array(
-      'title'   => 'Generate Token',
+      'title'   => 'Login',
       'status'  => true,
       'message' => 'Token berhasil digenerate',
       'token'   => $token,
