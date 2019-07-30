@@ -1,5 +1,5 @@
 <ngb-carousel *ngIf="images" [showNavigationArrows]="showNavigationArrows"
-  [showNavigationIndicators]="showNavigationIndicators" style="margin-top: -5px">
+  [showNavigationIndicators]="showNavigationIndicators">
   <ng-template ngbSlide *ngFor="let image of images">
     <div class="picsum-img-wrapper">
       <img src="{{image.image_url}}" alt="Random slide" style="width: 100%">

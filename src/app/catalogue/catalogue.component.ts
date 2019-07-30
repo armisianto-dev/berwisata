@@ -44,6 +44,7 @@ export class CatalogueComponent implements OnInit {
         this.paginationPerPage,
         this.catalogueSearchData.city
       )
+      this.currPage = page
       this.showLoading = false
     }, 1000)
   }

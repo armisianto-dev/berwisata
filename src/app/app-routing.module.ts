@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core'
 import { RouterModule, Routes } from '@angular/router'
+import { AuthComponent } from './account/auth/auth.component'
 import { CatalogueDetailComponent } from './catalogue/catalogue-detail/catalogue-detail.component'
 import { HomeComponent } from './components/home/home.component'
 
@@ -28,12 +29,23 @@ const routes: Routes = [
     },
   },
   {
-    path: 'customer',
-    loadChildren: './customer/customer.module#CustomerModule',
+    path: 'account',
+    loadChildren: './account/account.module#AccountModule',
     data: {
-      state: 'customer',
-      title: 'Customer | Berwisata',
-      nav_title: 'Customer',
+      state: 'account',
+      title: 'Account | Berwisata',
+      nav_title: 'Account',
+      back: true,
+      back_path: 'home',
+    },
+  },
+  {
+    path: 'account/auth',
+    component: AuthComponent,
+    data: {
+      state: 'account',
+      title: 'Login | Berwisata',
+      nav_title: 'Login',
       back: true,
       back_path: 'home',
     },
