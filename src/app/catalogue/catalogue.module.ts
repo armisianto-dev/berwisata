@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common'
 import { NgModule } from '@angular/core'
+import { FormsModule } from '@angular/forms'
 import { MatProgressSpinnerModule, MatTabsModule } from '@angular/material'
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap'
 import { MaterialModule } from '../material.module'
@@ -16,6 +17,7 @@ import { CatalogueComponent } from './catalogue.component'
     MatTabsModule,
     NgbModule,
     MatProgressSpinnerModule,
+    FormsModule,
   ],
 })
 export class CatalogueModule {}

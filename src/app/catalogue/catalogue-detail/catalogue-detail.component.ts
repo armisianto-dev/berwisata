@@ -39,6 +39,6 @@ export class CatalogueDetailComponent implements OnInit {
       this.catalogueDetailObservable.subscribe(res =>
         this.titleService.setTitle(res.paket_nama + ' | Berwisata')
       )
-    }, 1000)
+    }, 500)
   }
 }

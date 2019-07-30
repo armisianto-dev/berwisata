@@ -15,7 +15,12 @@ class Paket_wisata extends REST_Controller {
 
   public function pagination_paket_wisata_get() {
 
-    $total = $this->M_paket_wisata->get_total_data_paket_wisata();
+    $qcity = $this->input->get('qCity', true);
+    $this->form_validation->set_data(compact('qCity'));
+
+    $qcity = empty($qcity) || $qcity == "" ? '%' : '%'.$qcity."%";
+
+    $total = $this->M_paket_wisata->get_total_data_paket_wisata(array($qcity));
     $result = array(
       "total" => $total
     );
@@ -26,13 +31,42 @@ class Paket_wisata extends REST_Controller {
   public function all_paket_wisata_get() {
     $page = $this->input->get('page', true);
     $per_page = $this->input->get('per_page', true);
+    $qcity = $this->input->get('qCity', true);
 
-    $this->form_validation->set_data(compact('page','per_page'));
+    $this->form_validation->set_data(compact('page','per_page','qCity'));
 
     $page = empty($page) ? 1 : $page;
     $start = (($page-1) * intval($per_page));
 
-    $result = $this->M_paket_wisata->get_all_paket_wisata(array($start, intval($per_page)));
+    $qcity = empty($qcity) || $qcity == "" ? '%' : '%'.$qcity."%";
+
+    $result = $this->M_paket_wisata->get_all_paket_wisata(array($qcity, $start, intval($per_page)));
+    if(! $result){
+      $response = array(
+        'title'   => 'List Paket Wisata',
+        'status'  => false,
+        'message' => 'List Paket Wisata tidak ditemukan',
+        'error'   => array(
+          'code'    => '002',
+          'message' => 'Data tidak ditemukan'
+        )
+      );
+      return $this->set_response($response, REST_Controller::HTTP_BAD_REQUEST);
+    }
+
+    $response = array(
+      'title'   => 'List Paket Wisata',
+      'status'  => true,
+      'message' => 'List Paket Wisata ditemukan',
+      'data'    => $result,
+    );
+    $this->set_response($result, REST_Controller::HTTP_OK);
+
+  }
+
+  public function paket_wisata_promo_get() {
+
+    $result = $this->M_paket_wisata->get_all_paket_wisata_promo();
     if(! $result){
       $response = array(
         'title'   => 'List Paket Wisata',

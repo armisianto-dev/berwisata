@@ -14,15 +14,16 @@
   <div class="col-12 p-4">
     <h5 class="text-primary">{{ 'Promo Terbaru' | uppercase}}</h5>
     <div class="row flex-row flex-nowrap" style="overflow: auto; white-space: nowrap; padding-bottom: 15px;">
-      <div class="col-12 col-sm-6 col-md-6 col-lg-4">
+      <div *ngFor="let promo of listPromo | async" class="col-12 col-sm-6 col-md-6 col-lg-4">
         <mat-card>
           <mat-card-header>
-            <mat-card-title style="margin-left: -16px">Bali 3D2N</mat-card-title>
+            <mat-card-title style="margin-left: -16px">{{promo.paket_nama}}</mat-card-title>
             <mat-card-subtitle class="text-sm" style="margin-left: -16px">
-              <i class="fa fa-map-marker mr-1"></i> Bali, Indonesia
+              <i class="fa fa-map-marker mr-1"></i> {{promo.city_name}}, {{promo.country_name}}
             </mat-card-subtitle>
           </mat-card-header>
-          <img mat-card-image src="assets/images/paket_wisata/bali.jpg" alt="Photo of a Shiba Inu" />
+          <img mat-card-image src="assets/images/{{promo.paket_img_path}}/{{promo.paket_img_name}}"
+            alt="Photo of a Shiba Inu" />
           <mat-card-content>
             <p class="row">
               <span class="col-6 text-left">
@@ -34,8 +35,12 @@
                 <span class="text-sm">97 tour selesai </span>
               </span>
               <span class="col-6 text-right align-middle">
-                <span class="text-secondary text-xs text-strike text-block mr-1">Rp. 500.000/pax</span>
-                <span class="text-bolder">Rp. 450.000/pax</span>
+                <span class="text-secondary text-xs text-strike text-block mr-1" *ngIf="promo.promo_st == 'yes'">
+                  {{promo.harga_normal | currency:"Rp "}}/pax</span>
+                <span class="text-bolder"
+                  *ngIf="promo.promo_st == 'yes'">{{promo.harga_promo | currency:"Rp "}}/pax</span>
+                <span class="text-bolder"
+                  *ngIf="promo.promo_st == 'no'">{{promo.harga_normal | currency:"Rp "}}/pax</span>
               </span>
             </p>
           </mat-card-content>
@@ -43,81 +48,7 @@
           <mat-card-footer class="p-10">
             <div class="row">
               <div class="col-12 text-right">
-                <a routerLink="/catalogue/catalogue-detail">
-                  Selengkapnya
-                </a>
-              </div>
-            </div>
-          </mat-card-footer>
-        </mat-card>
-      </div>
-      <div class="col-12 col-sm-6 col-md-6 col-lg-4">
-        <mat-card>
-          <mat-card-header>
-            <mat-card-title style="margin-left: -16px">Bali 3D2N</mat-card-title>
-            <mat-card-subtitle class="text-sm" style="margin-left: -16px">
-              <i class="fa fa-map-marker mr-1"></i> Bali, Indonesia
-            </mat-card-subtitle>
-          </mat-card-header>
-          <img mat-card-image src="assets/images/paket_wisata/bali.jpg" alt="Photo of a Shiba Inu" />
-          <mat-card-content>
-            <p class="row">
-              <span class="col-6 text-left">
-                <span class="text-block">
-                  <i class="fa fa-heart mr-1 text-danger"></i>
-                  <span class="text-sm">26 </span>
-                </span>
-                <i class="fa fa-briefcase mr-1 text-info"></i>
-                <span class="text-sm">97 tour selesai </span>
-              </span>
-              <span class="col-6 text-right align-middle">
-                <span class="text-secondary text-xs text-strike text-block mr-1">Rp. 500.000/pax</span>
-                <span class="text-bolder">Rp. 450.000/pax</span>
-              </span>
-            </p>
-          </mat-card-content>
-          <mat-divider></mat-divider>
-          <mat-card-footer class="p-10">
-            <div class="row">
-              <div class="col-12 text-right">
-                <a routerLink="/catalogue/catalogue-detail">
-                  Selengkapnya
-                </a>
-              </div>
-            </div>
-          </mat-card-footer>
-        </mat-card>
-      </div>
-      <div class="col-12 col-sm-6 col-md-6 col-lg-4">
-        <mat-card>
-          <mat-card-header>
-            <mat-card-title style="margin-left: -16px">Bali 3D2N</mat-card-title>
-            <mat-card-subtitle class="text-sm" style="margin-left: -16px">
-              <i class="fa fa-map-marker mr-1"></i> Bali, Indonesia
-            </mat-card-subtitle>
-          </mat-card-header>
-          <img mat-card-image src="assets/images/paket_wisata/bali.jpg" alt="Photo of a Shiba Inu" />
-          <mat-card-content>
-            <p class="row">
-              <span class="col-6 text-left">
-                <span class="text-block">
-                  <i class="fa fa-heart mr-1 text-danger"></i>
-                  <span class="text-sm">26 </span>
-                </span>
-                <i class="fa fa-briefcase mr-1 text-info"></i>
-                <span class="text-sm">97 tour selesai </span>
-              </span>
-              <span class="col-6 text-right align-middle">
-                <span class="text-secondary text-xs text-strike text-block mr-1">Rp. 500.000/pax</span>
-                <span class="text-bolder">Rp. 450.000/pax</span>
-              </span>
-            </p>
-          </mat-card-content>
-          <mat-divider></mat-divider>
-          <mat-card-footer class="p-10">
-            <div class="row">
-              <div class="col-12 text-right">
-                <a routerLink="/catalogue/catalogue-detail">
+                <a routerLink="/catalogue/catalogue-detail/{{promo.paket_id}}">
                   Selengkapnya
                 </a>
               </div>

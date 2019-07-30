@@ -9,6 +9,7 @@ const routes: Routes = [
     redirectTo: '/home',
     pathMatch: 'full',
     data: {
+      state: 'home',
       title: 'Home | Berwisata',
       nav_title: 'Berwisata',
       back: false,
@@ -19,6 +20,7 @@ const routes: Routes = [
     path: 'home',
     component: HomeComponent,
     data: {
+      state: 'home',
       title: 'Home | Berwisata',
       nav_title: 'Berwisata',
       back: false,
@@ -29,6 +31,7 @@ const routes: Routes = [
     path: 'customer',
     loadChildren: './customer/customer.module#CustomerModule',
     data: {
+      state: 'customer',
       title: 'Customer | Berwisata',
       nav_title: 'Customer',
       back: true,
@@ -39,6 +42,7 @@ const routes: Routes = [
     path: 'catalogue',
     loadChildren: './catalogue/catalogue.module#CatalogueModule',
     data: {
+      state: 'catalogue',
       title: 'Katalog | Berwisata',
       nav_title: 'Katalog',
       back: true,
@@ -49,6 +53,7 @@ const routes: Routes = [
     path: 'catalogue/catalogue-detail/:catalogueId',
     component: CatalogueDetailComponent,
     data: {
+      state: 'catalogue-detail',
       title: 'Katalog Detail | Berwisata',
       nav_title: 'Katalog Detail',
       back: true,
@@ -59,6 +64,7 @@ const routes: Routes = [
     path: 'travel-booking',
     loadChildren: './travel-booking/travel-booking.module#TravelBookingModule',
     data: {
+      state: 'travel-booking',
       title: 'Booking | Berwisata',
       nav_title: 'Booking',
       back: true,

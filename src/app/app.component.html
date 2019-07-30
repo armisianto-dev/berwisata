@@ -3,7 +3,8 @@
   <a *ngIf="currentRouter.back === true" routerLink="{{currentRouter.back_path}}" class="text-white text-thin">
     <i class="fa fa-times mx-2"></i>
   </a>
-  <h2 class="mat-h2">{{currentRouter.nav_title}}</h2>
+  <h2 class="mat-h2" style="max-width: 10em;overflow-wrap: break-word;overflow: hidden;">{{currentRouter.nav_title}}
+  </h2>
   <span class="flex-spacer"></span>
   <div fxLayout="row" fxLayoutAlign="end center">
     <button mat-icon-button class="badge-notification" data-badge="9+">
@@ -14,7 +15,9 @@
     </button>
   </div>
 </mat-toolbar>
-<router-outlet></router-outlet>
+<main [@routerTransition]="getState()">
+  <router-outlet></router-outlet>
+</main>
 <mat-toolbar id="bottom-bar" color="white" fxLayout="row" fxLayoutAlign="space-around center">
   <a mat-button routerLink="/home" class="text-secondary" routerLinkActive="text-primary">
     <mat-icon>home</mat-icon>
