@@ -21,6 +21,15 @@ class Token extends REST_Controller {
   }
 
   public function index_post() {
+
+    $postdata = file_get_contents("php://input");
+    $obj = json_decode($postdata,true);
+
+    $email = $obj['email'];
+    $password = $obj['password'];
+
+    $this->form_validation->set_data(compact('email','password'));
+
     // validasi input
     $this->form_validation->set_rules('email', 'Email', 'trim|required|valid_email');
     $this->form_validation->set_rules('password', 'Password', 'trim|required');
@@ -37,9 +46,6 @@ class Token extends REST_Controller {
       );
       return $this->set_response($response, REST_Controller::HTTP_UNPROCESSABLE_ENTITY);
     }
-
-    $email = $this->input->post('email', true);
-    $password = $this->input->post('password', true);
 
     // $user = $this->M_com_user->get_user(array($username, $role));
     if ($email != "armisianto@gmail.com" || $password != "kosongsatu") {
@@ -83,6 +89,51 @@ class Token extends REST_Controller {
       'title'   => 'Login',
       'status'  => true,
       'message' => 'Token berhasil digenerate',
+      'token'   => $token,
+    );
+    $this->set_response($response, REST_Controller::HTTP_OK);
+  }
+
+  public function check_auth_get() {
+    // check header or url parameters or post parameters for token
+    $token = $this->input->get('token', true);
+    if (! $token) {
+      $response = array(
+        'title'   => 'Unauthorized',
+        'status'  => false,
+        'message' => 'Anda tidak memiliki izin untuk mengakses halaman ini',
+        'error'   => array(
+          'code'    => '040',
+          'message' => 'Authorization token not found'
+        )
+      );
+      $this->set_response($response, REST_Controller::HTTP_UNAUTHORIZED);
+      $this->output->_display();
+      exit;
+    }
+
+    $config = $this->config->item('jwt');
+    try {
+      $decode = JWT::decode($token, $config['private_key'], array($config['algorithms']));
+    } catch (Exception $e) {
+      $response = array(
+        'title'   => 'Unauthorized',
+        'status'  => false,
+        'message' => 'Anda tidak memiliki izin untuk mengakses halaman ini',
+        'error'   => array(
+          'code'    => '041',
+          'message' => $e->getMessage(),
+        )
+      );
+      $this->set_response($response, REST_Controller::HTTP_UNAUTHORIZED);
+      $this->output->_display();
+      exit;
+    }
+
+    $response = array(
+      'title'   => 'Authorized',
+      'status'  => true,
+      'message' => 'Token masih aktif',
       'token'   => $token,
     );
     $this->set_response($response, REST_Controller::HTTP_OK);

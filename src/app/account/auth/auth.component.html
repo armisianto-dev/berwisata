@@ -2,20 +2,34 @@
   <div class="col-12 p-3">
     <div class="mx-auto" style="max-width: 50em">
       <h5 class="text-center mx-auto">Login</h5>
-      <form #loginForm="ngForm" (ngSubmit)="loginProcess(loginForm)">
+      <form [formGroup]="loginForm" (ngSubmit)="loginProcess()">
         <div class="form-group">
           <label>E-Mail</label>
-          <input type="text" class="form-control" name="email" placeholder="Masukkan email" ngModel autofocus>
+          <input type="text" class="form-control" formControlName="email" name="email" placeholder="Masukkan email"
+            #email autofocus>
+          <div
+            *ngIf="loginForm.controls['email'].invalid && (loginForm.controls['email'].dirty || loginForm.controls['email'].touched)">
+            <small *ngIf="loginForm.controls['email'].errors.required" class="text-danger text-block mt-2">email harus
+              diisi</small>
+            <small *ngIf="loginForm.controls['email'].errors.email" class="text-danger text-block mt-2">format email
+              tidak valid</small>
+          </div>
         </div>
         <div class="form-group">
           <label>Password</label>
-          <input type="password" class="form-control" name="password" placeholder="Masukkan password" ngModel>
+          <input type="password" class="form-control" formControlName="password" name="password"
+            placeholder="Masukkan password" #password>
+          <small
+            *ngIf="loginForm.controls['password'].invalid && (loginForm.controls['password'].dirty || loginForm.controls['password'].touched)"
+            class="text-danger text-block mt-2">password
+            harus diisi</small>
         </div>
         <div class="form-group">
           <a href="" class="text-warning">Lupa password ?</a>
         </div>
         <div class="form-group">
-          <button class="btn btn-md btn-success btn-block" type="submit">Masuk</button>
+          <button class="btn btn-md btn-success btn-block" type="submit"
+            [disabled]="loginForm.pristine || loginForm.invalid">Masuk</button>
         </div>
       </form>
       <div class="row mx-0 my-3">

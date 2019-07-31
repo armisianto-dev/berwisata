@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core'
+import { FormBuilder, FormGroup, Validators } from '@angular/forms'
 import { Router } from '@angular/router'
+import { Observable } from 'rxjs'
+import { LoginResponse } from 'src/app/model/auth/login-response'
 import { AuthService } from 'src/app/services/auth/auth.service'
 
 @Component({
@@ -9,15 +12,35 @@ import { AuthService } from 'src/app/services/auth/auth.service'
 })
 export class AuthComponent implements OnInit {
   loginData: any = {}
-  constructor(private router: Router, private authService: AuthService) {}
+  loginForm: FormGroup
 
-  loginProcess(loginForm) {
-    const data = loginForm.value
-    if (data.email && data.password) {
-      this.authService.auth(loginForm.value).subscribe(res => console.log(res))
-    } else {
-      console.log('Username dan Password Harus Diisi')
-    }
+  loginResponse: Observable<LoginResponse>
+
+  constructor(
+    private router: Router,
+    private authService: AuthService,
+    private fb: FormBuilder
+  ) {
+    this.createLoginForm()
+  }
+
+  createLoginForm() {
+    this.loginForm = this.fb.group({
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', Validators.required],
+    })
+  }
+
+  loginProcess() {
+    this.authService.auth(this.loginForm.value).subscribe(response => {
+      if (response.status) {
+        console.log('Login berhasil')
+        localStorage.setItem('session_login', response.token)
+        this.router.navigate(['/account'])
+      } else {
+        console.log(response.message)
+      }
+    })
   }
 
   ngOnInit() {}
