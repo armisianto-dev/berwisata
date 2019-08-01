@@ -1,6 +1,10 @@
 import { Component, OnInit } from '@angular/core'
 import { FormBuilder, FormGroup, Validators } from '@angular/forms'
 import { Router } from '@angular/router'
+import {
+  AuthService as SocialAuthService,
+  GoogleLoginProvider,
+} from 'angularx-social-login'
 import { Observable } from 'rxjs'
 import { LoginResponse } from 'src/app/model/auth/login-response'
 import { AuthService } from 'src/app/services/auth/auth.service'
@@ -19,7 +23,8 @@ export class AuthComponent implements OnInit {
   constructor(
     private router: Router,
     private authService: AuthService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private socialAuthService: SocialAuthService
   ) {
     this.createLoginForm()
   }
@@ -40,6 +45,20 @@ export class AuthComponent implements OnInit {
       } else {
         console.log(response.message)
       }
+    })
+  }
+
+  signInWithGoogle(): void {
+    this.socialAuthService.signIn(GoogleLoginProvider.PROVIDER_ID).then(response => {
+      this.authService.authGoogle(response.email).subscribe(response => {
+        if (response.status) {
+          console.log('Login berhasil')
+          localStorage.setItem('session_login', response.token)
+          this.router.navigate(['/account'])
+        } else {
+          console.log(response.message)
+        }
+      })
     })
   }
 

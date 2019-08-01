@@ -15,21 +15,10 @@ export class AccountComponent implements OnInit {
   constructor(private router: Router, private authService: AuthService) {}
 
   logoutProcess() {
-    localStorage.removeItem('session_login')
-    this.router.navigate(['/home'])
+    this.authService.signOut()
   }
 
   ngOnInit() {
-    if (!localStorage.getItem('session_login')) {
-      this.router.navigate(['/account/auth'])
-    } else {
-      const token = localStorage.getItem('session_login')
-      this.authResponse = this.authService.check_auth(token)
-      this.authResponse.subscribe(response => {
-        if (!response.status) {
-          this.router.navigate(['/account/auth'])
-        }
-      })
-    }
+    this.authService.check_auth()
   }
 }

@@ -94,6 +94,76 @@ class Token extends REST_Controller {
     $this->set_response($response, REST_Controller::HTTP_OK);
   }
 
+  public function auth_email_get() {
+
+
+    $email = $this->input->get('email', true);
+
+    $this->form_validation->set_data(compact('email'));
+
+    // validasi input
+    $this->form_validation->set_rules('email', 'Email', 'trim|required|valid_email');
+
+    if ($this->form_validation->run() === false) {
+      $response = array(
+        'title'   => 'Login',
+        'status'  => false,
+        'message' => 'Token gagal digenerate',
+        'error'   => array(
+          'code'    => '001',
+          'message' => array_values($this->form_validation->error_array())
+        )
+      );
+      return $this->set_response($response, REST_Controller::HTTP_UNPROCESSABLE_ENTITY);
+    }
+
+    // $user = $this->M_com_user->get_user(array($username, $role));
+    if ($email != "armisianto@gmail.com") {
+      $response = array(
+        'title'   => 'Login',
+        'status'  => false,
+        'message' => 'Token gagal digenerate',
+        'error'   => array(
+          'code'    => '002',
+          'message' => 'Periksa kembali username dan password anda'
+        ),
+      );
+      return $this->set_response($response, REST_Controller::HTTP_UNAUTHORIZED);
+    }
+
+    // $password_decode = $this->encrypt->decode($user['user_pass'], $user['user_key']);
+    // if (md5($password) != $password_decode) {
+    //   $response = array(
+    //     'title'   => 'Login',
+    //     'status'  => false,
+    //     'message' => 'Token gagal digenerate',
+    //     'error'   => array(
+    //       'code'    => '003',
+    //       'message' => 'Periksa kembali username dan password anda'
+    //     ),
+    //   );
+    //   return $this->set_response($response, REST_Controller::HTTP_UNAUTHORIZED);
+    // }
+
+    $now_seconds = time();
+    $config   = $this->config->item('jwt');
+    $payload  = array(
+      'iat' => $now_seconds,
+      'exp' => $now_seconds+($config['expiration_time']),  // expiration time
+      'username' => $email,
+    );
+
+    $token = JWT::encode($payload, $config['private_key'], $config['algorithms']);
+
+    $response = array(
+      'title'   => 'Login',
+      'status'  => true,
+      'message' => 'Token berhasil digenerate',
+      'token'   => $token,
+    );
+    $this->set_response($response, REST_Controller::HTTP_OK);
+  }
+
   public function check_auth_get() {
     // check header or url parameters or post parameters for token
     $token = $this->input->get('token', true);

@@ -3,7 +3,8 @@
     <form #searchForm="ngForm" (ngSubmit)="onSearchSubmit(searchForm)" autocomplete="off" novalidate>
       <div class="input-group mb-3">
         <input type="text" class="form-control" name="city" placeholder="Masukan kota tujuan"
-          aria-label="Masukan kota tujuan" aria-describedby="basic-addon2" ngModel>
+          aria-label="Masukan kota tujuan" aria-describedby="basic-addon2" (input)="onSearchChange($event.target.value)"
+          ngModel>
         <div class="input-group-append">
           <button class="btn btn-primary" type="submit">
             <i class="fa fa-search mx-2"></i>

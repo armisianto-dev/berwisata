@@ -13,7 +13,7 @@ import { CatalogueService } from '../services/catalogue/catalogue.service'
 export class CatalogueComponent implements OnInit {
   showLoading: boolean = true
   currPage: number = 1
-  paginationPerPage: number = 2
+  paginationPerPage: number = 5
   paginationTotal: number = 0
   paginationConfig: PaginationConfig
 
@@ -26,6 +26,14 @@ export class CatalogueComponent implements OnInit {
     this.catalogueSearchData = searchForm.value
     this.setPagination()
     this.onPageChange(1)
+  }
+
+  onSearchChange(searchValue: string) {
+    if (searchValue.length >= 5) {
+      this.catalogueSearchData = { city: searchValue }
+      this.setPagination()
+      this.onPageChange(1)
+    }
   }
 
   setPagination() {
@@ -51,7 +59,7 @@ export class CatalogueComponent implements OnInit {
 
   ngOnInit() {
     this.currPage = 1
-    this.paginationPerPage = 2
+    this.paginationPerPage = 5
 
     setTimeout(() => {
       this.catalogueListsObservable = this.catalogueService.get_all_catalogue_lists(

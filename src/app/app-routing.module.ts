@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router'
 import { AuthComponent } from './account/auth/auth.component'
 import { CatalogueDetailComponent } from './catalogue/catalogue-detail/catalogue-detail.component'
 import { HomeComponent } from './components/home/home.component'
+import { AuthguardService as AuthGuard } from './services/auth/authguard.service'
 
 const routes: Routes = [
   {
@@ -75,6 +76,7 @@ const routes: Routes = [
   {
     path: 'travel-booking',
     loadChildren: './travel-booking/travel-booking.module#TravelBookingModule',
+    canActivate: [AuthGuard],
     data: {
       state: 'travel-booking',
       title: 'Booking | Berwisata',
