@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms'
 import { Router } from '@angular/router'
 import {
   AuthService as SocialAuthService,
+  FacebookLoginProvider,
   GoogleLoginProvider,
 } from 'angularx-social-login'
 import { Observable } from 'rxjs'
@@ -55,6 +56,25 @@ export class AuthComponent implements OnInit {
   signInWithGoogle(): void {
     this.socialAuthService.signIn(GoogleLoginProvider.PROVIDER_ID).then(response => {
       this.authService.authGoogle(response.email).subscribe(
+        response => {
+          if (response.status) {
+            console.log('Login berhasil')
+            localStorage.setItem('session_login', response.token)
+            this.router.navigate(['/account'])
+          } else {
+            console.log(response.message)
+          }
+        },
+        error => {
+          this.loginMessage = error.error.error.message
+        }
+      )
+    })
+  }
+
+  signInWithFacebook(): void {
+    this.socialAuthService.signIn(FacebookLoginProvider.PROVIDER_ID).then(response => {
+      this.authService.authFacebook(response.email).subscribe(
         response => {
           if (response.status) {
             console.log('Login berhasil')

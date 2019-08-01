@@ -98,11 +98,13 @@ class Token extends REST_Controller {
 
 
     $email = $this->input->get('email', true);
+    $source = $this->input->get('source', true);
 
-    $this->form_validation->set_data(compact('email'));
+    $this->form_validation->set_data(compact('email','source'));
 
     // validasi input
     $this->form_validation->set_rules('email', 'Email', 'trim|required|valid_email');
+    $this->form_validation->set_rules('source', 'Source', 'trim|required');
 
     if ($this->form_validation->run() === false) {
       $response = array(
@@ -118,7 +120,7 @@ class Token extends REST_Controller {
     }
 
     // $user = $this->M_com_user->get_user(array($username, $role));
-    if ($email != "armisianto@gmail.com") {
+    if ($email != "armisianto@gmail.com" && $source == "google") {
       $response = array(
         'title'   => 'Login',
         'status'  => false,
@@ -126,6 +128,19 @@ class Token extends REST_Controller {
         'error'   => array(
           'code'    => '002',
           'message' => 'Email anda belum terdaftar'
+        ),
+      );
+      return $this->set_response($response, REST_Controller::HTTP_UNAUTHORIZED);
+    }
+
+    if ($email != "armisianto.othermail@gmail.com" && $source == "fb") {
+      $response = array(
+        'title'   => 'Login',
+        'status'  => false,
+        'message' => 'Token gagal digenerate',
+        'error'   => array(
+          'code'    => '002',
+          'message' => 'Akun anda belum terdaftar'
         ),
       );
       return $this->set_response($response, REST_Controller::HTTP_UNAUTHORIZED);

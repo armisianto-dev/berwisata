@@ -26,7 +26,13 @@ export class AuthService {
 
   authGoogle(email: string): Observable<LoginResponse> {
     return this.httpClient.get<LoginResponse>(
-      this.baseUrl + 'auth/token/auth_email?email=' + email
+      this.baseUrl + 'auth/token/auth_email?email=' + email + '&source=google'
+    )
+  }
+
+  authFacebook(email: string): Observable<LoginResponse> {
+    return this.httpClient.get<LoginResponse>(
+      this.baseUrl + 'auth/token/auth_email?email=' + email + '&source=fb'
     )
   }
 
