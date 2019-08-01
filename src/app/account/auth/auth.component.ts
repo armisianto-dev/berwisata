@@ -16,6 +16,7 @@ import { AuthService } from 'src/app/services/auth/auth.service'
 })
 export class AuthComponent implements OnInit {
   loginData: any = {}
+  loginMessage: string = ''
   loginForm: FormGroup
 
   loginResponse: Observable<LoginResponse>
@@ -37,28 +38,36 @@ export class AuthComponent implements OnInit {
   }
 
   loginProcess() {
-    this.authService.auth(this.loginForm.value).subscribe(response => {
-      if (response.status) {
-        console.log('Login berhasil')
-        localStorage.setItem('session_login', response.token)
-        this.router.navigate(['/account'])
-      } else {
-        console.log(response.message)
+    this.authService.auth(this.loginForm.value).subscribe(
+      response => {
+        if (response.status) {
+          console.log(response.message)
+          localStorage.setItem('session_login', response.token)
+          this.router.navigate(['/account'])
+        }
+      },
+      error => {
+        this.loginMessage = error.error.error.message
       }
-    })
+    )
   }
 
   signInWithGoogle(): void {
     this.socialAuthService.signIn(GoogleLoginProvider.PROVIDER_ID).then(response => {
-      this.authService.authGoogle(response.email).subscribe(response => {
-        if (response.status) {
-          console.log('Login berhasil')
-          localStorage.setItem('session_login', response.token)
-          this.router.navigate(['/account'])
-        } else {
-          console.log(response.message)
+      this.authService.authGoogle(response.email).subscribe(
+        response => {
+          if (response.status) {
+            console.log('Login berhasil')
+            localStorage.setItem('session_login', response.token)
+            this.router.navigate(['/account'])
+          } else {
+            console.log(response.message)
+          }
+        },
+        error => {
+          this.loginMessage = error.error.error.message
         }
-      })
+      )
     })
   }
 

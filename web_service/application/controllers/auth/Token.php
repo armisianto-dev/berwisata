@@ -125,7 +125,7 @@ class Token extends REST_Controller {
         'message' => 'Token gagal digenerate',
         'error'   => array(
           'code'    => '002',
-          'message' => 'Periksa kembali username dan password anda'
+          'message' => 'Email anda belum terdaftar'
         ),
       );
       return $this->set_response($response, REST_Controller::HTTP_UNAUTHORIZED);
