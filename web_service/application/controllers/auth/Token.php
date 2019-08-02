@@ -105,7 +105,6 @@ class Token extends REST_Controller {
 
   public function auth_social_post() {
 
-
     $postdata = file_get_contents("php://input");
     $obj = json_decode($postdata,true);
 
@@ -136,16 +135,17 @@ class Token extends REST_Controller {
 
     $user = $this->M_com_user->get_user_by_social_id(array($provider, $social_id));
     if (!$user) {
-      $response = array(
-        'title'   => 'Login',
-        'status'  => false,
-        'message' => 'Token gagal digenerate',
-        'error'   => array(
-          'code'    => '002',
-          'message' => 'Akun belum terhubung'
-        ),
-      );
-      return $this->set_response($response, REST_Controller::HTTP_UNAUTHORIZED);
+      // $response = array(
+      //   'title'   => 'Login',
+      //   'status'  => false,
+      //   'message' => 'Token gagal digenerate',
+      //   'error'   => array(
+      //     'code'    => '002',
+      //     'message' => 'Akun belum terhubung'
+      //   ),
+      // );
+      // return $this->set_response($response, REST_Controller::HTTP_UNAUTHORIZED);
+      $this->register_social($obj);
     }
 
     $now_seconds = time();
@@ -189,6 +189,111 @@ class Token extends REST_Controller {
     $this->set_response($response, REST_Controller::HTTP_OK);
   }
 
+  public function register_social($obj) {
+
+    $social_id = $obj['social_id'];
+    $provider = $obj['provider'];
+    $name = $obj['name'];
+    $email = $obj['email'];
+    $photoUrl = $obj['photoUrl'];
+
+    $this->form_validation->set_data(compact('social_id','provider'));
+
+    // validasi input
+    $this->form_validation->set_rules('social_id', 'ID', 'trim|required');
+    $this->form_validation->set_rules('provider', 'Provider', 'trim|required');
+
+    if ($this->form_validation->run() === false) {
+      $response = array(
+        'title'   => 'Register',
+        'status'  => false,
+        'message' => 'Register gagal',
+        'error'   => array(
+          'code'    => '001',
+          'message' => array_values($this->form_validation->error_array())
+        )
+      );
+      return $this->set_response($response, REST_Controller::HTTP_UNPROCESSABLE_ENTITY);
+    }
+
+    $prefixdate = date('Ym');
+    $params = $prefixdate.'%';
+    $user_id = $this->M_com_user->get_user_last_id($prefixdate, $params);
+
+    $params = array(
+      "user_id" => $user_id,
+      "user_alias" => $name,
+      "user_mail" => $email,
+      "user_img_path" => $photoUrl,
+      "user_st" => "1",
+      "user_completed" => "0",
+      "mdd" => date('Y-m-d H:i:s')
+    );
+
+    if($this->M_com_user->insert_user($params)){
+      $params = array(
+        "user_id" => $user_id,
+        "id" => $social_id,
+        "provider" => $provider,
+        "name" => $name,
+        "email" => $email,
+        "photoUrl" => $photoUrl
+      );
+
+      if($this->M_com_user->insert_user_social($params)){
+        $now_seconds = time();
+        $config   = $this->config->item('jwt');
+        $payload  = array(
+          'iat' => $now_seconds,
+          'exp' => $now_seconds+($config['expiration_time']),  // expiration time
+          'username' => $email,
+        );
+
+        $token = JWT::encode($payload, $config['private_key'], $config['algorithms']);
+
+        $params = array(
+          "user_id" => $user_id,
+          "token" => $token,
+          "provider" => $provider,
+          "login_date" => date("Y-m-d H:i:s")
+        );
+
+        $this->M_com_user->insert_user_login($params);
+
+        $response = array(
+          'title'   => 'Login',
+          'status'  => true,
+          'message' => 'Token berhasil digenerate',
+          'token'   => $token
+        );
+        $this->set_response($response, REST_Controller::HTTP_OK);
+
+      }else{
+        $response = array(
+          'title'   => 'Register',
+          'status'  => false,
+          'message' => 'Register gagal',
+          'error'   => array(
+            'code'    => '002',
+            'message' => "Data user gagal disimpan"
+          )
+        );
+        return $this->set_response($response, REST_Controller::HTTP_BAD_REQUEST);
+      }
+    }else{
+      $response = array(
+        'title'   => 'Register',
+        'status'  => false,
+        'message' => 'Register gagal',
+        'error'   => array(
+          'code'    => '002',
+          'message' => "Data user gagal disimpan"
+        )
+      );
+      return $this->set_response($response, REST_Controller::HTTP_BAD_REQUEST);
+    }
+  }
+
   public function profile_get(){
 
     $token = $this->input->get('token', true);
@@ -196,7 +301,10 @@ class Token extends REST_Controller {
     $response = array(
       'name' => $user['name'],
       'email' => $user['email'],
-      'photoUrl' => $user['photoUrl']
+      'photoUrl' => $user['photoUrl'],
+      'gender' => $user['gender'],
+      'birthday' => $user['birthday'],
+      'no_hp' => $user['no_hp']
     );
 
     $this->set_response($response, REST_Controller::HTTP_OK);

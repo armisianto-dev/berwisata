@@ -15,7 +15,15 @@ export class AuthService {
   baseUrl = environment.web_services
 
   user: SocialUser
-  userProfile: Profile = { name: '', email: '', photoUrl: '' }
+  defaultProfile = {
+    name: '',
+    email: '',
+    photoUrl: '',
+    gender: '',
+    birthday: '',
+    no_hp: '',
+  }
+  userProfile: Profile = this.defaultProfile
   profileChange: BehaviorSubject<Profile>
 
   constructor(
@@ -51,7 +59,7 @@ export class AuthService {
   check_auth(): boolean {
     const token = localStorage.getItem('session_login')
     if (!token) {
-      this.userProfile = { name: '', email: '', photoUrl: '' }
+      this.userProfile = this.defaultProfile
       this.profileChange.next(this.userProfile)
       this.router.navigateByUrl('/account/auth')
       return false
@@ -93,12 +101,12 @@ export class AuthService {
             this.userProfile = user
             this.profileChange.next(this.userProfile)
           } else {
-            this.userProfile = { name: '', email: '', photoUrl: '' }
+            this.userProfile = this.defaultProfile
             this.profileChange.next(this.userProfile)
           }
         },
         error => {
-          this.userProfile = { name: '', email: '', photoUrl: '' }
+          this.userProfile = this.defaultProfile
           this.profileChange.next(this.userProfile)
         }
       )

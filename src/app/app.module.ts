@@ -1,5 +1,7 @@
+import { registerLocaleData } from '@angular/common'
 import { HttpClientModule } from '@angular/common/http'
-import { NgModule } from '@angular/core'
+import id from '@angular/common/locales/id'
+import { LOCALE_ID, NgModule } from '@angular/core'
 import { FlexLayoutModule } from '@angular/flex-layout'
 import { BrowserModule } from '@angular/platform-browser'
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
@@ -16,6 +18,9 @@ import { MaterialModule } from './material.module'
 import { RouterServiceService } from './services/router-service/router-service.service'
 import { TravelBookingModule } from './travel-booking/travel-booking.module'
 import { WelcomeModule } from './welcome/welcome.module'
+
+// register locale data
+registerLocaleData(id, 'id')
 
 @NgModule({
   declarations: [AppComponent, HomeComponent],
@@ -35,7 +40,7 @@ import { WelcomeModule } from './welcome/welcome.module'
     AccountModule,
     HttpClientModule,
   ],
-  providers: [RouterServiceService],
+  providers: [RouterServiceService, { provide: LOCALE_ID, useValue: 'id' }],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

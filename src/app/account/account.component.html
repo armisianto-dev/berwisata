@@ -20,7 +20,7 @@
           </li>
           <li class="list-group-item">
             <small class="text-secondary text-block">No Handphone</small>
-            081391825544
+            {{userProfile.no_hp}}
           </li>
         </ul>
       </div>
@@ -31,11 +31,12 @@
         <ul class="list-group list-group-flush">
           <li class="list-group-item">
             <small class="text-secondary text-block">Tanggal Lahir</small>
-            13 Maret 1993
+            {{userProfile.birthday | date:'d MMMM y'}}
           </li>
           <li class="list-group-item">
             <small class="text-secondary text-block">Jenis Kelamin</small>
-            Laki-laki
+            <ng-container *ngIf="userProfile.gender == 'Male'">Laki - Laki</ng-container>
+            <ng-container *ngIf="userProfile.gender == 'Female'">Perempuan</ng-container>
           </li>
         </ul>
       </div>

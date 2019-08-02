@@ -13,7 +13,15 @@ export class AccountComponent implements OnInit {
   isLogedIn: boolean = false
   authResponse: Observable<LoginResponse>
 
-  userProfile: Profile = { name: '', email: '', photoUrl: '' }
+  defaultProfile = {
+    name: '',
+    email: '',
+    photoUrl: '',
+    gender: '',
+    birthday: '',
+    no_hp: '',
+  }
+  userProfile: Profile = this.defaultProfile
 
   constructor(private authService: AuthService) {}
 

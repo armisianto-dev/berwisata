@@ -18,7 +18,15 @@ export class AppComponent implements OnInit {
   env = environment
   currentRouter: IRouter
 
-  userProfile: Profile = { name: '', email: '', photoUrl: '' }
+  defaultProfile = {
+    name: '',
+    email: '',
+    photoUrl: '',
+    gender: '',
+    birthday: '',
+    no_hp: '',
+  }
+  userProfile: Profile = this.defaultProfile
 
   public constructor(
     private router: Router,
