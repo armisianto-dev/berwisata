@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core'
-import { Router } from '@angular/router'
 import { Observable } from 'rxjs'
 import { LoginResponse } from '../model/auth/login-response'
+import { Profile } from '../model/auth/profile'
 import { AuthService } from '../services/auth/auth.service'
 
 @Component({
@@ -12,7 +12,10 @@ import { AuthService } from '../services/auth/auth.service'
 export class AccountComponent implements OnInit {
   isLogedIn: boolean = false
   authResponse: Observable<LoginResponse>
-  constructor(private router: Router, private authService: AuthService) {}
+
+  userProfile: Profile = { name: '', email: '', photoUrl: '' }
+
+  constructor(private authService: AuthService) {}
 
   logoutProcess() {
     this.authService.signOut()
@@ -20,5 +23,8 @@ export class AccountComponent implements OnInit {
 
   ngOnInit() {
     this.authService.check_auth()
+    this.authService.loadUserProfile().subscribe(user => {
+      this.userProfile = user
+    })
   }
 }

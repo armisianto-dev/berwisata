@@ -47,8 +47,8 @@ class Token extends REST_Controller {
       return $this->set_response($response, REST_Controller::HTTP_UNPROCESSABLE_ENTITY);
     }
 
-    // $user = $this->M_com_user->get_user(array($username, $role));
-    if ($email != "armisianto@gmail.com" || $password != "kosongsatu") {
+    $user = $this->M_com_user->get_user_by_username(array($email));
+    if (!$user) {
       $response = array(
         'title'   => 'Login',
         'status'  => false,
@@ -61,19 +61,19 @@ class Token extends REST_Controller {
       return $this->set_response($response, REST_Controller::HTTP_UNAUTHORIZED);
     }
 
-    // $password_decode = $this->encrypt->decode($user['user_pass'], $user['user_key']);
-    // if (md5($password) != $password_decode) {
-    //   $response = array(
-    //     'title'   => 'Login',
-    //     'status'  => false,
-    //     'message' => 'Token gagal digenerate',
-    //     'error'   => array(
-    //       'code'    => '003',
-    //       'message' => 'Periksa kembali username dan password anda'
-    //     ),
-    //   );
-    //   return $this->set_response($response, REST_Controller::HTTP_UNAUTHORIZED);
-    // }
+    $password_decode = $this->encrypt->decode($user['user_pass'], $user['user_key']);
+    if (md5($password) != $password_decode) {
+      $response = array(
+        'title'   => 'Login',
+        'status'  => false,
+        'message' => 'Token gagal digenerate',
+        'error'   => array(
+          'code'    => '003',
+          'message' => 'Periksa kembali username dan password anda'
+        ),
+      );
+      return $this->set_response($response, REST_Controller::HTTP_UNAUTHORIZED);
+    }
 
     $now_seconds = time();
     $config   = $this->config->item('jwt');
@@ -85,6 +85,15 @@ class Token extends REST_Controller {
 
     $token = JWT::encode($payload, $config['private_key'], $config['algorithms']);
 
+    $params = array(
+      "user_id" => $user['user_id'],
+      "token" => $token,
+      "provider" => "MANUAL",
+      "login_date" => date("Y-m-d H:i:s")
+    );
+
+    $this->M_com_user->insert_user_login($params);
+
     $response = array(
       'title'   => 'Login',
       'status'  => true,
@@ -94,17 +103,23 @@ class Token extends REST_Controller {
     $this->set_response($response, REST_Controller::HTTP_OK);
   }
 
-  public function auth_email_get() {
+  public function auth_social_post() {
 
 
-    $email = $this->input->get('email', true);
-    $source = $this->input->get('source', true);
+    $postdata = file_get_contents("php://input");
+    $obj = json_decode($postdata,true);
 
-    $this->form_validation->set_data(compact('email','source'));
+    $social_id = $obj['social_id'];
+    $provider = $obj['provider'];
+    $name = $obj['name'];
+    $email = $obj['email'];
+    $photoUrl = $obj['photoUrl'];
+
+    $this->form_validation->set_data(compact('social_id','provider'));
 
     // validasi input
-    $this->form_validation->set_rules('email', 'Email', 'trim|required|valid_email');
-    $this->form_validation->set_rules('source', 'Source', 'trim|required');
+    $this->form_validation->set_rules('social_id', 'ID', 'trim|required');
+    $this->form_validation->set_rules('provider', 'Provider', 'trim|required');
 
     if ($this->form_validation->run() === false) {
       $response = array(
@@ -119,46 +134,19 @@ class Token extends REST_Controller {
       return $this->set_response($response, REST_Controller::HTTP_UNPROCESSABLE_ENTITY);
     }
 
-    // $user = $this->M_com_user->get_user(array($username, $role));
-    if ($email != "armisianto@gmail.com" && $source == "google") {
+    $user = $this->M_com_user->get_user_by_social_id(array($provider, $social_id));
+    if (!$user) {
       $response = array(
         'title'   => 'Login',
         'status'  => false,
         'message' => 'Token gagal digenerate',
         'error'   => array(
           'code'    => '002',
-          'message' => 'Email anda belum terdaftar'
+          'message' => 'Akun belum terhubung'
         ),
       );
       return $this->set_response($response, REST_Controller::HTTP_UNAUTHORIZED);
     }
-
-    if ($email != "armisianto.othermail@gmail.com" && $source == "fb") {
-      $response = array(
-        'title'   => 'Login',
-        'status'  => false,
-        'message' => 'Token gagal digenerate',
-        'error'   => array(
-          'code'    => '002',
-          'message' => 'Akun anda belum terdaftar'
-        ),
-      );
-      return $this->set_response($response, REST_Controller::HTTP_UNAUTHORIZED);
-    }
-
-    // $password_decode = $this->encrypt->decode($user['user_pass'], $user['user_key']);
-    // if (md5($password) != $password_decode) {
-    //   $response = array(
-    //     'title'   => 'Login',
-    //     'status'  => false,
-    //     'message' => 'Token gagal digenerate',
-    //     'error'   => array(
-    //       'code'    => '003',
-    //       'message' => 'Periksa kembali username dan password anda'
-    //     ),
-    //   );
-    //   return $this->set_response($response, REST_Controller::HTTP_UNAUTHORIZED);
-    // }
 
     $now_seconds = time();
     $config   = $this->config->item('jwt');
@@ -170,12 +158,47 @@ class Token extends REST_Controller {
 
     $token = JWT::encode($payload, $config['private_key'], $config['algorithms']);
 
+    $params = array(
+      "name" => $name,
+      "email" => $email,
+      "photoUrl" => $photoUrl
+    );
+
+    $where = array(
+      "id" => $social_id,
+      "provider" => $provider
+    );
+
+    $this->M_com_user->update_user_social($params, $where);
+
+    $params = array(
+      "user_id" => $user['user_id'],
+      "token" => $token,
+      "provider" => $provider,
+      "login_date" => date("Y-m-d H:i:s")
+    );
+
+    $this->M_com_user->insert_user_login($params);
+
     $response = array(
       'title'   => 'Login',
       'status'  => true,
       'message' => 'Token berhasil digenerate',
-      'token'   => $token,
+      'token'   => $token
     );
+    $this->set_response($response, REST_Controller::HTTP_OK);
+  }
+
+  public function profile_get(){
+
+    $token = $this->input->get('token', true);
+    $user = $this->M_com_user->get_user_by_token($token);
+    $response = array(
+      'name' => $user['name'],
+      'email' => $user['email'],
+      'photoUrl' => $user['photoUrl']
+    );
+
     $this->set_response($response, REST_Controller::HTTP_OK);
   }
 
@@ -193,8 +216,6 @@ class Token extends REST_Controller {
         )
       );
       $this->set_response($response, REST_Controller::HTTP_UNAUTHORIZED);
-      $this->output->_display();
-      exit;
     }
 
     $config = $this->config->item('jwt');
@@ -211,8 +232,6 @@ class Token extends REST_Controller {
         )
       );
       $this->set_response($response, REST_Controller::HTTP_UNAUTHORIZED);
-      $this->output->_display();
-      exit;
     }
 
     $response = array(

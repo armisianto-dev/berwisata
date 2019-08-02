@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common'
 import { NgModule } from '@angular/core'
 import { FormsModule, ReactiveFormsModule } from '@angular/forms'
+import { NgbAlertModule } from '@ng-bootstrap/ng-bootstrap'
 import {
   AuthServiceConfig,
   FacebookLoginProvider,
@@ -36,6 +37,7 @@ export function provideConfig() {
     FormsModule,
     ReactiveFormsModule,
     SocialLoginModule,
+    NgbAlertModule,
   ],
   providers: [
     {

@@ -1,6 +1,6 @@
 <div class="row mx-0">
-  <div class="col-12 py-3 bg-secondary">
-    <img src="assets/images/account/armisianto.jpg" class="img-circle mx-auto d-block" alt="">
+  <div class="col-12 py-3 bg-secondary profile-header">
+    <img src="{{userProfile.photoUrl}}" class="img-circle mx-auto d-block" alt="">
   </div>
   <div class="col-12 p-3">
     <div class="mx-auto" style="max-width: 50em">
@@ -12,11 +12,11 @@
         <ul class="list-group list-group-flush">
           <li class="list-group-item">
             <small class="text-secondary text-block">Nama Lengkap</small>
-            Armisianto
+            {{ userProfile.name }}
           </li>
           <li class="list-group-item">
             <small class="text-secondary text-block">E-Mail</small>
-            armisianto@gmail.com
+            {{userProfile.email}}
           </li>
           <li class="list-group-item">
             <small class="text-secondary text-block">No Handphone</small>

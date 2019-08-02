@@ -38,13 +38,19 @@ export class AuthComponent implements OnInit {
     })
   }
 
+  closeAlert() {
+    this.loginMessage = ''
+  }
+
   loginProcess() {
-    this.authService.auth(this.loginForm.value).subscribe(
+    const val = this.loginForm.value
+
+    this.authService.auth(val.email, val.password).subscribe(
       response => {
         if (response.status) {
-          console.log(response.message)
           localStorage.setItem('session_login', response.token)
-          this.router.navigate(['/account'])
+          this.authService.setUserProfile()
+          this.router.navigateByUrl('/account')
         }
       },
       error => {
@@ -55,14 +61,12 @@ export class AuthComponent implements OnInit {
 
   signInWithGoogle(): void {
     this.socialAuthService.signIn(GoogleLoginProvider.PROVIDER_ID).then(response => {
-      this.authService.authGoogle(response.email).subscribe(
+      this.authService.authSocial().subscribe(
         response => {
           if (response.status) {
-            console.log('Login berhasil')
             localStorage.setItem('session_login', response.token)
-            this.router.navigate(['/account'])
-          } else {
-            console.log(response.message)
+            this.authService.setUserProfile()
+            this.router.navigateByUrl('/account')
           }
         },
         error => {
@@ -74,14 +78,13 @@ export class AuthComponent implements OnInit {
 
   signInWithFacebook(): void {
     this.socialAuthService.signIn(FacebookLoginProvider.PROVIDER_ID).then(response => {
-      this.authService.authFacebook(response.email).subscribe(
+      this.authService.authSocial().subscribe(
         response => {
           if (response.status) {
             console.log('Login berhasil')
             localStorage.setItem('session_login', response.token)
-            this.router.navigate(['/account'])
-          } else {
-            console.log(response.message)
+            this.authService.setUserProfile()
+            this.router.navigateByUrl('/account')
           }
         },
         error => {

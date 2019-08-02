@@ -1,11 +1,11 @@
 import { HttpClient } from '@angular/common/http'
 import { Injectable } from '@angular/core'
 import { Router } from '@angular/router'
-import { AuthService as SocialAuthService } from 'angularx-social-login'
-import { Observable } from 'rxjs'
+import { AuthService as SocialAuthService, SocialUser } from 'angularx-social-login'
+import { BehaviorSubject, Observable } from 'rxjs'
 import { AuthResponse } from 'src/app/model/auth/auth-response'
-import { LoginData } from 'src/app/model/auth/login-data'
 import { LoginResponse } from 'src/app/model/auth/login-response'
+import { Profile } from 'src/app/model/auth/profile'
 import { environment } from 'src/environments/environment'
 
 @Injectable({
@@ -14,51 +14,106 @@ import { environment } from 'src/environments/environment'
 export class AuthService {
   baseUrl = environment.web_services
 
+  user: SocialUser
+  userProfile: Profile = { name: '', email: '', photoUrl: '' }
+  profileChange: BehaviorSubject<Profile>
+
   constructor(
     private httpClient: HttpClient,
     private router: Router,
     private socialAuthService: SocialAuthService
-  ) {}
-
-  auth(loginData: LoginData): Observable<LoginResponse> {
-    return this.httpClient.post<LoginResponse>(this.baseUrl + 'auth/token', loginData)
+  ) {
+    this.profileChange = new BehaviorSubject(this.userProfile)
   }
 
-  authGoogle(email: string): Observable<LoginResponse> {
-    return this.httpClient.get<LoginResponse>(
-      this.baseUrl + 'auth/token/auth_email?email=' + email + '&source=google'
-    )
+  auth(email: string, password: string): Observable<LoginResponse> {
+    return this.httpClient.post<LoginResponse>(this.baseUrl + 'auth/token', {
+      email,
+      password,
+    })
   }
 
-  authFacebook(email: string): Observable<LoginResponse> {
-    return this.httpClient.get<LoginResponse>(
-      this.baseUrl + 'auth/token/auth_email?email=' + email + '&source=fb'
+  authSocial(): Observable<LoginResponse> {
+    this.loadSocialUser()
+    const body = {
+      social_id: this.user.id,
+      provider: this.user.provider,
+      name: this.user.name,
+      email: this.user.email,
+      photoUrl: this.user.photoUrl,
+    }
+    return this.httpClient.post<LoginResponse>(
+      this.baseUrl + 'auth/token/auth_social',
+      body
     )
   }
 
   check_auth(): boolean {
-    let token = localStorage.getItem('session_login')
+    const token = localStorage.getItem('session_login')
+    if (!token) {
+      this.userProfile = { name: '', email: '', photoUrl: '' }
+      this.profileChange.next(this.userProfile)
+      this.router.navigateByUrl('/account/auth')
+      return false
+    }
 
     this.httpClient
       .get<AuthResponse>(this.baseUrl + 'auth/token/check_auth?token=' + token)
       .subscribe(
         response => {
           if (response.status === false) {
-            this.router.navigate(['/account/auth'])
+            localStorage.removeItem('session_login')
+            this.router.navigateByUrl('/account/auth')
             return false
           }
         },
         error => {
-          this.router.navigate(['/account/auth'])
+          localStorage.removeItem('session_login')
+          this.router.navigateByUrl('/account/auth')
           return false
         }
       )
     return true
   }
 
+  loadUserProfile() {
+    let token = localStorage.getItem('session_login')
+    return this.httpClient.get<Profile>(
+      this.baseUrl + 'auth/token/profile?token=' + token
+    )
+  }
+
+  setUserProfile() {
+    let token = localStorage.getItem('session_login')
+    this.httpClient
+      .get<Profile>(this.baseUrl + 'auth/token/profile?token=' + token)
+      .subscribe(
+        user => {
+          if (user) {
+            this.userProfile = user
+            this.profileChange.next(this.userProfile)
+          } else {
+            this.userProfile = { name: '', email: '', photoUrl: '' }
+            this.profileChange.next(this.userProfile)
+          }
+        },
+        error => {
+          this.userProfile = { name: '', email: '', photoUrl: '' }
+          this.profileChange.next(this.userProfile)
+        }
+      )
+  }
+
+  loadSocialUser() {
+    this.socialAuthService.authState.subscribe(user => {
+      this.user = user
+    })
+  }
+
   signOut() {
     localStorage.removeItem('session_login')
     this.socialAuthService.signOut()
-    this.router.navigate(['/home'])
+    this.setUserProfile()
+    this.router.navigateByUrl('/home')
   }
 }

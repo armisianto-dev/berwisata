@@ -14,17 +14,25 @@ export class AuthguardService implements CanActivate {
 
   canActivate(): boolean {
     let token = localStorage.getItem('session_login')
+    if (!token) {
+      this.router.navigate(['account/auth'])
+      return false
+    }
+
     this.httpCLient
       .get<AuthResponse>(this.baseUrl + 'auth/token/check_auth?token=' + token)
-      .subscribe(response => {
-        if (response.status === false) {
+      .subscribe(
+        response => {
+          if (response.status === false) {
+            this.router.navigate(['account/auth'])
+            return false
+          }
+        },
+        error => {
           this.router.navigate(['account/auth'])
           return false
         }
-      }, error => {
-          this.router.navigate(['account/auth'])
-          return false
-      })
+      )
     return true
   }
 }

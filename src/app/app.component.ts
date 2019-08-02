@@ -2,9 +2,10 @@ import { Component, OnInit } from '@angular/core'
 import { Title } from '@angular/platform-browser'
 import { NavigationEnd, Router, RouterEvent } from '@angular/router'
 import { environment } from 'src/environments/environment'
+import { Profile } from './model/auth/profile'
 import { IRouter } from './model/router/router'
 import { routerTransition } from './router.animations'
-import { CatalogueService } from './services/catalogue/catalogue.service'
+import { AuthService } from './services/auth/auth.service'
 import { RouterServiceService } from './services/router-service/router-service.service'
 
 @Component({
@@ -16,11 +17,14 @@ import { RouterServiceService } from './services/router-service/router-service.s
 export class AppComponent implements OnInit {
   env = environment
   currentRouter: IRouter
+
+  userProfile: Profile = { name: '', email: '', photoUrl: '' }
+
   public constructor(
     private router: Router,
     private titleService: Title,
     private routeService: RouterServiceService,
-    private catalogueService: CatalogueService
+    private authService: AuthService
   ) {
     this.router.events.subscribe((event: RouterEvent) => {
       if (event instanceof NavigationEnd) {
@@ -37,5 +41,16 @@ export class AppComponent implements OnInit {
   ngOnInit() {
     this.titleService.setTitle(this.routeService.getRouteData('title'))
     this.currentRouter = this.routeService.getRouteAllData()
+
+    this.authService.profileChange.subscribe(user => {
+      this.userProfile = user
+    })
+  }
+
+  ngAfterViewInit(): void {
+    this.authService.setUserProfile()
+    this.authService.profileChange.subscribe(user => {
+      this.userProfile = user
+    })
   }
 }

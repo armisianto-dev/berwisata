@@ -6,6 +6,10 @@
   z-index: 100;
 }
 
+.img-circle {
+  border-radius: 50%;
+}
+
 #bottom-bar {
   overflow: hidden;
   position: fixed;

@@ -2,12 +2,9 @@
   <div class="col-12 p-3">
     <div class="mx-auto" style="max-width: 50em">
       <h5 class="text-center mx-auto">Login</h5>
-      <div class="alert alert-danger fade in alert-dismissible show" *ngIf="loginMessage != ''">
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-          <span aria-hidden="true" style="font-size:20px">×</span>
-        </button>
-        <p>{{loginMessage}}</p>
-      </div>
+      <ngb-alert type="danger" *ngIf="loginMessage != ''" (close)="closeAlert()">
+        {{loginMessage}}
+      </ngb-alert>
       <form [formGroup]="loginForm" (ngSubmit)="loginProcess()">
         <div class="form-group">
           <label>E-Mail</label>
