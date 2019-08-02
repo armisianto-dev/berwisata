@@ -32,6 +32,7 @@ const routes: Routes = [
   {
     path: 'account',
     loadChildren: './account/account.module#AccountModule',
+    canActivate: [AuthGuard],
     data: {
       state: 'account',
       title: 'Account | Berwisata',
