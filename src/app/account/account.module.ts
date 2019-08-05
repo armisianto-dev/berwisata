@@ -10,7 +10,9 @@ import {
 } from 'angularx-social-login'
 import { AccountRoutingModule } from './account-routing.module'
 import { AccountComponent } from './account.component'
-import { AuthComponent } from './auth/auth.component'
+import { AuthComponent } from './auth/auth.component';
+import { RegisterComponent } from './register/register.component';
+import { ConnectComponent } from './connect/connect.component'
 
 const configSocialAuth = new AuthServiceConfig([
   {
@@ -30,7 +32,7 @@ export function provideConfig() {
 }
 
 @NgModule({
-  declarations: [AccountComponent, AuthComponent],
+  declarations: [AccountComponent, AuthComponent, RegisterComponent, ConnectComponent],
   imports: [
     CommonModule,
     AccountRoutingModule,

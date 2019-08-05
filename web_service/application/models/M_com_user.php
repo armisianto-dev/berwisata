@@ -54,6 +54,20 @@ class M_com_user extends CI_Model {
     }
   }
 
+  public function get_user_social($params){
+    $sql = "SELECT email, id, name, photoUrl, provider
+      FROM com_user_social
+      WHERE user_id = ? ";
+    $query = $this->db->query($sql, $params);
+    if($query->num_rows() > 0){
+      $result = $query->result_array();
+      $query->free_result();
+      return $result;
+    }else{
+      return array();
+    }
+  }
+
   public function get_user_by_token($params){
     $sql = "SELECT a.user_id,
     IF(c.user_id IS NOT NULL, c.name, a.user_alias) AS 'name',
@@ -74,6 +88,19 @@ class M_com_user extends CI_Model {
     }else{
       return array();
     }
+  }
+
+  public function is_exist_social_id($params){
+    $sql = "SELECT COUNT(*) AS 'total' FROM com_user_social WHERE id = ? ";
+    $query = $this->db->query($sql, $params);
+    if($query->num_rows() > 0){
+      $result = $query->row_array();
+      $query->free_result();
+      if($result['total'] == 0){
+        return false;
+      }
+    }
+    return true;
   }
 
   public function insert_user($params){

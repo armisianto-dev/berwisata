@@ -4,5 +4,5 @@ export interface Profile {
   photoUrl: string
   gender: string
   birthday: string
-  no_hp: string
-}
+  no_hp: string}
+

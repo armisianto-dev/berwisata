@@ -6,6 +6,7 @@ import { BehaviorSubject, Observable } from 'rxjs'
 import { AuthResponse } from 'src/app/model/auth/auth-response'
 import { LoginResponse } from 'src/app/model/auth/login-response'
 import { Profile } from 'src/app/model/auth/profile'
+import { SocialAccounts } from 'src/app/model/auth/social-accounts'
 import { environment } from 'src/environments/environment'
 
 @Injectable({
@@ -56,6 +57,23 @@ export class AuthService {
     )
   }
 
+  connectSocial(socialUser: SocialUser) {
+    let token = localStorage.getItem('session_login')
+    const body = {
+      token: token,
+      social_id: socialUser.id,
+      provider: socialUser.provider,
+      name: socialUser.name,
+      email: socialUser.email,
+      photoUrl: socialUser.photoUrl,
+    }
+
+    return this.httpClient.post<LoginResponse>(
+      this.baseUrl + 'auth/token/connect_social',
+      body
+    )
+  }
+
   check_auth(): boolean {
     const token = localStorage.getItem('session_login')
     if (!token) {
@@ -88,6 +106,13 @@ export class AuthService {
     let token = localStorage.getItem('session_login')
     return this.httpClient.get<Profile>(
       this.baseUrl + 'auth/token/profile?token=' + token
+    )
+  }
+
+  loadSocialAccounts() {
+    let token = localStorage.getItem('session_login')
+    return this.httpClient.get<SocialAccounts[]>(
+      this.baseUrl + 'auth/token/social_accounts?token=' + token
     )
   }
 

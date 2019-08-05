@@ -310,6 +310,102 @@ class Token extends REST_Controller {
     $this->set_response($response, REST_Controller::HTTP_OK);
   }
 
+  public function social_accounts_get(){
+
+    $token = $this->input->get('token', true);
+    $user = $this->M_com_user->get_user_by_token($token);
+    $rs_social_accounts = $this->M_com_user->get_user_social($user['user_id']);
+    $response = array();
+    if($rs_social_accounts){
+      foreach($rs_social_accounts as $social_account){
+        $response[$social_account['provider']] = $social_account;
+      }
+    }
+
+    $this->set_response($response, REST_Controller::HTTP_OK);
+  }
+
+  public function connect_social_post(){
+
+    $postdata = file_get_contents("php://input");
+    $obj = json_decode($postdata,true);
+
+    $token = $obj['token'];
+    $social_id = $obj['social_id'];
+    $provider = $obj['provider'];
+    $name = $obj['name'];
+    $email = $obj['email'];
+    $photoUrl = $obj['photoUrl'];
+
+    $this->form_validation->set_data(compact('social_id','provider'));
+
+    // validasi input
+    $this->form_validation->set_rules('social_id', 'ID', 'trim|required');
+    $this->form_validation->set_rules('provider', 'Provider', 'trim|required');
+
+    if ($this->form_validation->run() === false) {
+      $response = array(
+        'title'   => 'Register',
+        'status'  => false,
+        'message' => 'Register gagal',
+        'error'   => array(
+          'code'    => '001',
+          'message' => array_values($this->form_validation->error_array())
+        )
+      );
+      return $this->set_response($response, REST_Controller::HTTP_UNPROCESSABLE_ENTITY);
+    }
+
+    if($this->M_com_user->is_exist_social_id($social_id)){
+      $response = array(
+        'title'   => 'Register',
+        'status'  => false,
+        'message' => 'Akun sosial media sudah terdaftar',
+        'error'   => array(
+          'code'    => '001',
+          'message' => 'Akun sosial media sudah terdaftar'
+        )
+      );
+      return $this->set_response($response, REST_Controller::HTTP_UNPROCESSABLE_ENTITY);
+    }
+
+    $user = $this->M_com_user->get_user_by_token($token);
+
+    $params = array(
+      "user_id" => $user['user_id'],
+      "id" => $social_id,
+      "provider" => $provider,
+      "name" => $name,
+      "email" => $email,
+      "photoUrl" => $photoUrl
+    );
+
+    if($this->M_com_user->insert_user_social($params)){
+      $response = array(
+        'title'   => 'Register',
+        'status'  => true,
+        'message' => 'Register berhasil',
+        'error'   => array(
+          'code'    => '002',
+          'message' => "Data user berhasil disimpan"
+        )
+      );
+      $this->set_response($response, REST_Controller::HTTP_OK);
+
+    }else{
+      $response = array(
+        'title'   => 'Register',
+        'status'  => false,
+        'message' => 'Register gagal',
+        'error'   => array(
+          'code'    => '002',
+          'message' => "Data user gagal disimpan"
+        )
+      );
+      return $this->set_response($response, REST_Controller::HTTP_BAD_REQUEST);
+    }
+  }
+
   public function check_auth_get() {
     // check header or url parameters or post parameters for token
     $token = $this->input->get('token', true);
