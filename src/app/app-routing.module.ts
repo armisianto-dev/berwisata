@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core'
 import { RouterModule, Routes } from '@angular/router'
 import { AuthComponent } from './account/auth/auth.component'
 import { ConnectComponent } from './account/connect/connect.component'
+import { RegisterComponent } from './account/register/register.component'
 import { CatalogueDetailComponent } from './catalogue/catalogue-detail/catalogue-detail.component'
 import { HomeComponent } from './components/home/home.component'
 import { AuthguardService as AuthGuard } from './services/auth/authguard.service'
@@ -51,6 +52,17 @@ const routes: Routes = [
       nav_title: 'Login',
       back: true,
       back_path: 'home',
+    },
+  },
+  {
+    path: 'account/register',
+    component: RegisterComponent,
+    data: {
+      state: 'account',
+      title: 'Pendaftaran Akun | Berwisata',
+      nav_title: 'Pendaftaran Akun',
+      back: true,
+      back_path: 'account',
     },
   },
   {

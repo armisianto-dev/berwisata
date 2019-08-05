@@ -12,8 +12,8 @@
     </button>
     <a mat-icon-button routerLink="/account" routerLinkActive="text-info" aria-label="Akun anda">
       <mat-icon *ngIf="!userProfile.photoUrl">account_circle</mat-icon>
-      <img *ngIf="userProfile" src="{{userProfile.photoUrl}}" alt="{{userProfile.name}}" class="img-circle"
-        style="width: 24px; height:24px;">
+      <img *ngIf="userProfile.photoUrl != ''" src="{{userProfile.photoUrl}}" alt="{{userProfile.name}}"
+        class="img-circle" style="width: 24px; height:24px;">
     </a>
   </div>
 </mat-toolbar>

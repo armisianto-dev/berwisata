@@ -135,17 +135,16 @@ class Token extends REST_Controller {
 
     $user = $this->M_com_user->get_user_by_social_id(array($provider, $social_id));
     if (!$user) {
-      // $response = array(
-      //   'title'   => 'Login',
-      //   'status'  => false,
-      //   'message' => 'Token gagal digenerate',
-      //   'error'   => array(
-      //     'code'    => '002',
-      //     'message' => 'Akun belum terhubung'
-      //   ),
-      // );
-      // return $this->set_response($response, REST_Controller::HTTP_UNAUTHORIZED);
-      $this->register_social($obj);
+      $response = array(
+        'title'   => 'Login',
+        'status'  => false,
+        'message' => 'Token gagal digenerate',
+        'error'   => array(
+          'code'    => '002',
+          'message' => 'Akun belum terhubung'
+        ),
+      );
+      return $this->set_response($response, REST_Controller::HTTP_UNAUTHORIZED);
     }
 
     $now_seconds = time();

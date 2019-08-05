@@ -1,1 +1,82 @@
-<p>register works!</p>
+<div class="row mx-auto">
+  <div class="col-12 p-3">
+    <form [formGroup]="registerForm">
+      <div class="mx-auto" style="max-width: 50em">
+        <h6 class="text-bolder my-3">Data Account</h6>
+        <div class="card">
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item">
+              <small class="text-secondary text-block">Nama Lengkap</small>
+              <input type="text" class="form-control" name="user_alias" formControlName="user_alias" autofocus>
+              <small *ngIf="registerForm.controls['user_alias'].invalid && (registerForm.controls['user_alias'].dirty ||
+                registerForm.controls['user_alias'].touched)" class="text-danger text-block mt-2">nama lengkap
+                harus diisi</small>
+            </li>
+            <li class="list-group-item">
+              <small class="text-secondary text-block">E-Mail</small>
+              <input type="text" class="form-control" name="user_mail" formControlName="user_mail">
+              <div *ngIf="registerForm.controls['user_mail'].invalid && (registerForm.controls['user_mail'].dirty ||
+                registerForm.controls['user_mail'].touched)">
+                <small *ngIf="registerForm.controls['user_mail'].errors.required"
+                  class="text-danger text-block mt-2">email
+                  harus
+                  diisi</small>
+                <small *ngIf="registerForm.controls['user_mail'].errors.email"
+                  class="text-danger text-block mt-2">format email
+                  tidak valid</small>
+              </div>
+            </li>
+            <li class="list-group-item">
+              <small class="text-secondary text-block">Password</small>
+              <input type="password" class="form-control" name="password" formControlName="password">
+              <small *ngIf="registerForm.controls['password'].invalid && (registerForm.controls['password'].dirty ||
+                registerForm.controls['password'].touched)" class="text-danger text-block mt-2">password
+                harus diisi</small>
+            </li>
+            <li class="list-group-item">
+              <small class="text-secondary text-block">Konfirmasi Password</small>
+              <input type="password" class="form-control" name="confirm_password" formControlName="confirm_password">
+              <div *ngIf="registerForm.controls['confirm_password'].invalid &&
+                (registerForm.controls['confirm_password'].dirty ||
+                registerForm.controls['confirm_password'].touched)">
+                <small *ngIf="registerForm.controls['confirm_password'].errors.required"
+                  class="text-danger text-block mt-2">konfirmasi password
+                  harus
+                  diisi</small>
+              </div>
+              <small
+                *ngIf="registerForm.controls['confirm_password'].value != '' && registerForm.hasError('missMatchValue')"
+                class="text-danger text-block mt-2">Konfirmasi password tidak sama</small>
+            </li>
+            <li class="list-group-item">
+              <small class="text-secondary text-block">No Handphone</small>
+              <input type="text" class="form-control" name="user_no_hp" formControlName="user_no_hp">
+              <small *ngIf="registerForm.controls['user_no_hp'].invalid && (registerForm.controls['user_no_hp'].dirty ||
+                registerForm.controls['user_no_hp'].touched)" class="text-danger text-block mt-2">No handphone
+                harus diisi</small>
+              <small
+                *ngIf="registerForm.controls['user_no_hp'].value != '' && registerForm.hasError('notValidNumberOnly')"
+                class="text-danger text-block mt-2">Format no handphone salah</small>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="mx-auto" style="max-width: 50em">
+        <h6 class="text-bolder my-3">Tanggal Lahir &amp; Jenis Kelamin</h6>
+        <div class="card mx-auto">
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item">
+              <small class="text-secondary text-block">Tanggal Lahir</small>
+            </li>
+            <li class="list-group-item">
+              <small class="text-secondary text-block">Jenis Kelamin</small>
+            </li>
+          </ul>
+        </div>
+        <button class="btn btn-md btn-default btn-dark btn-block my-3">
+          Daftar
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
