@@ -1,6 +1,9 @@
 <div class="row mx-auto">
   <div class="col-12 p-3">
-    <form [formGroup]="registerForm">
+    <ngb-alert type="danger" *ngIf="registerMessage != ''" (close)="closeAlert()" class="my-3">
+      {{registerMessage}}
+    </ngb-alert>
+    <form [formGroup]="registerForm" (submit)="registerProcess()">
       <div class="mx-auto" style="max-width: 50em">
         <h6 class="text-bolder my-3">Data Account</h6>
         <div class="card">
@@ -56,7 +59,10 @@
                 harus diisi</small>
               <small
                 *ngIf="registerForm.controls['user_no_hp'].value != '' && registerForm.hasError('notValidNumberOnly')"
-                class="text-danger text-block mt-2">Format no handphone salah</small>
+                class="text-danger text-block mt-2">Format no handphone salah, hanya boleh berisi angka</small>
+              <small
+                *ngIf="registerForm.controls['user_no_hp'].value != '' && registerForm.hasError('notValidLeadingZero')"
+                class="text-danger text-block mt-2">Format no handphone salah, harus dimulai angka "0"</small>
             </li>
           </ul>
         </div>
@@ -67,13 +73,40 @@
           <ul class="list-group list-group-flush">
             <li class="list-group-item">
               <small class="text-secondary text-block">Tanggal Lahir</small>
+              <div class="input-group">
+                <input matInput [matDatepicker]="picker" name="user_birthday" formControlName="user_birthday"
+                  placeholder="Pilih Tanggal" class="form-control" readonly>
+                <mat-datepicker touchUi #picker></mat-datepicker>
+                <div class="input-group-append">
+                  <button mat-raised-button (click)="picker.open()" class="btn btn-sm btn-warning px-3" type="button">
+                    <i class="fa fa-calendar"></i>
+                  </button>
+                </div>
+              </div>
+              <small *ngIf="registerForm.controls['user_birthday'].invalid && (registerForm.controls['user_birthday'].dirty
+                ||
+                registerForm.controls['user_birthday'].touched)" class="text-danger text-block mt-2">tanggal lahir
+                harus diisi</small>
             </li>
             <li class="list-group-item">
               <small class="text-secondary text-block">Jenis Kelamin</small>
+              <mat-radio-group class="radio-group" name="user_gender" formControlName="user_gender">
+                <mat-radio-button class="radio-button" value="Male">
+                  <i class="fa fa-male mr-2"></i> Laki-Laki
+                </mat-radio-button>
+                <mat-radio-button class="radio-button" value="Female">
+                  <i class="fa fa-female mr-2"></i> Perempuan
+                </mat-radio-button>
+              </mat-radio-group>
+              <small *ngIf="registerForm.controls['user_gender'].invalid && (registerForm.controls['user_gender'].dirty
+                ||
+                registerForm.controls['user_gender'].touched)" class="text-danger text-block mt-2">jenis kelamin
+                harus diisi</small>
             </li>
           </ul>
         </div>
-        <button class="btn btn-md btn-default btn-dark btn-block my-3">
+        <button class="btn btn-md btn-default btn-dark btn-block my-3"
+          [disabled]="registerForm.pristine || registerForm.invalid" type="submit">
           Daftar
         </button>
       </div>

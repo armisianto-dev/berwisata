@@ -188,6 +188,96 @@ class Token extends REST_Controller {
     $this->set_response($response, REST_Controller::HTTP_OK);
   }
 
+  public function register_account_post(){
+    $postdata = file_get_contents("php://input");
+    $obj = json_decode($postdata,true);
+
+    // user_mail: val.user_mail,
+    //   password: val.password,
+    //   confirm_password: val.confirm_password,
+    //   user_no_hp: val.user_no_hp,
+    //   user_alias: val.user_alias,
+    //   user_birthday: val.user_birthday,
+    //   user_gender: val.user_gender,
+
+    $user_mail = $obj['user_mail'];
+    $password = $obj['password'];
+    $confirm_password = $obj['confirm_password'];
+    $user_no_hp = $obj['user_no_hp'];
+    $user_alias = $obj['user_alias'];
+    $user_birthday = $obj['user_birthday'];
+    $user_gender = $obj['user_gender'];
+
+    $this->form_validation->set_data(compact('user_mail','password','confirm_password','user_no_hp','user_alias','user_birthday','user_gender'));
+
+    // validasi input
+    $this->form_validation->set_rules('user_mail', 'Email', 'trim|required|valid_email');
+    $this->form_validation->set_rules('password', 'Password', 'trim|required');
+    $this->form_validation->set_rules('confirm_password', 'Konfirmasi Password', 'trim|required');
+    $this->form_validation->set_rules('user_no_hp', 'No Handphone', 'trim|required|numeric');
+    $this->form_validation->set_rules('user_alias', 'Nama Lengkap', 'trim|required');
+    $this->form_validation->set_rules('user_birthday', 'Tanggal Lahir', 'trim|required');
+    $this->form_validation->set_rules('user_gender', 'Jenis Kelamin', 'trim|required');
+
+    if ($this->form_validation->run() === false) {
+      $response = array(
+        'title'   => 'Register',
+        'status'  => false,
+        'message' => array_values($this->form_validation->error_array()),
+      );
+      return $this->set_response($response, REST_Controller::HTTP_UNPROCESSABLE_ENTITY);
+    }
+
+    if($this->M_com_user->is_exist_email($user_mail)){
+      $response = array(
+        'title'   => 'Register',
+        'status'  => false,
+        'message' => 'Proses Pendaftaran Akun Gagal : Email sudah terdaftar',
+      );
+      return $this->set_response($response, REST_Controller::HTTP_UNPROCESSABLE_ENTITY);
+    }
+
+    // generate User id
+    $prefixdate = date('Ym');
+    $params = $prefixdate.'%';
+    $user_id = $this->M_com_user->get_user_last_id($prefixdate, $params);
+
+    // Generate password dan key
+    $key = abs(crc32($password));
+    $password = $this->encrypt->encode(md5($password), $key);
+
+    $params = array(
+      "user_id" => $user_id,
+      "user_alias" => $user_alias,
+      "user_name" => $user_mail,
+      "user_mail" => $user_mail,
+      "user_pass" => $password,
+      "user_key" => $key,
+      "user_gender" => $user_gender,
+      "user_birthday" => $user_birthday,
+      "user_no_hp" => $user_no_hp,
+      "user_st" => "1",
+      "user_completed" => "1",
+      "mdd" => date('Y-m-d H:i:s')
+    );
+
+    if($this->M_com_user->insert_user($params)){
+      $response = array(
+        'title'   => 'Register',
+        'status'  => true,
+        'message' => 'Proses Pendaftaran Akun Berhasil'
+      );
+      $this->set_response($response, REST_Controller::HTTP_OK);
+    }else{
+      $response = array(
+        'title'   => 'Register',
+        'status'  => false,
+        'message' => 'Proses Pendaftaran Akun Gagal'
+      );
+      return $this->set_response($response, REST_Controller::HTTP_BAD_REQUEST);
+    }
+  }
+
   public function register_social($obj) {
 
     $social_id = $obj['social_id'];

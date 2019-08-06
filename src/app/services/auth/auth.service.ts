@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http'
 import { Injectable } from '@angular/core'
+import { FormGroup } from '@angular/forms'
 import { Router } from '@angular/router'
 import { AuthService as SocialAuthService, SocialUser } from 'angularx-social-login'
 import { BehaviorSubject, Observable } from 'rxjs'
@@ -53,6 +54,24 @@ export class AuthService {
     }
     return this.httpClient.post<LoginResponse>(
       this.baseUrl + 'auth/token/auth_social',
+      body
+    )
+  }
+
+  registerAccount(registerForm: FormGroup): Observable<LoginResponse> {
+    const val = registerForm.value
+    const body = {
+      user_mail: val.user_mail,
+      password: val.password,
+      confirm_password: val.confirm_password,
+      user_no_hp: val.user_no_hp,
+      user_alias: val.user_alias,
+      user_birthday: val.user_birthday,
+      user_gender: val.user_gender,
+    }
+
+    return this.httpClient.post<LoginResponse>(
+      this.baseUrl + 'auth/token/register_account',
       body
     )
   }

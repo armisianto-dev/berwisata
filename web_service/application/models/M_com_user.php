@@ -103,6 +103,19 @@ class M_com_user extends CI_Model {
     return true;
   }
 
+  public function is_exist_email($params){
+    $sql = "SELECT COUNT(*) AS 'total' FROM com_user WHERE user_mail = ? ";
+    $query = $this->db->query($sql, $params);
+    if($query->num_rows() > 0){
+      $result = $query->row_array();
+      $query->free_result();
+      if($result['total'] == 0){
+        return false;
+      }
+    }
+    return true;
+  }
+
   public function insert_user($params){
     return $this->db->insert('com_user', $params);
   }

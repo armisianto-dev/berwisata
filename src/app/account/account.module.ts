@@ -1,6 +1,12 @@
 import { CommonModule } from '@angular/common'
 import { NgModule } from '@angular/core'
 import { FormsModule, ReactiveFormsModule } from '@angular/forms'
+import {
+  MatDatepickerModule,
+  MatFormFieldModule,
+  MatNativeDateModule,
+  MatRadioModule,
+} from '@angular/material'
 import { NgbAlertModule } from '@ng-bootstrap/ng-bootstrap'
 import {
   AuthServiceConfig,
@@ -10,9 +16,9 @@ import {
 } from 'angularx-social-login'
 import { AccountRoutingModule } from './account-routing.module'
 import { AccountComponent } from './account.component'
-import { AuthComponent } from './auth/auth.component';
-import { RegisterComponent } from './register/register.component';
+import { AuthComponent } from './auth/auth.component'
 import { ConnectComponent } from './connect/connect.component'
+import { RegisterComponent } from './register/register.component'
 
 const configSocialAuth = new AuthServiceConfig([
   {
@@ -40,6 +46,10 @@ export function provideConfig() {
     ReactiveFormsModule,
     SocialLoginModule,
     NgbAlertModule,
+    MatDatepickerModule,
+    MatFormFieldModule,
+    MatNativeDateModule,
+    MatRadioModule,
   ],
   providers: [
     {
